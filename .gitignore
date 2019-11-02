@@ -9,7 +9,7 @@
 
 # Env
 /server/.env
-/client/env.ts
+/client/env.js
 
 # dependencies
 /node_modules
