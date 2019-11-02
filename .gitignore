@@ -8,8 +8,9 @@
 /bazel-out
 
 # Env
+.env
 /server/.env
-/client/src/env.js
+/client/src/environment.js
 
 # dependencies
 /node_modules
