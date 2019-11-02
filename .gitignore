@@ -8,10 +8,13 @@
 /bazel-out
 
 # Env
-.env
+/server/.env
+/client/env.ts
 
 # dependencies
 /node_modules
+/server/node_modules
+/client/node_modules
 
 # profiling files
 chrome-profiler-events*.json
