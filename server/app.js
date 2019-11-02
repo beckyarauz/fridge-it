@@ -11,6 +11,8 @@ const nocache = require('nocache')
 const session = require("express-session")
 const MongoStore = require('connect-mongo')(session)
 
+const User = require('./models/User');
+
 require('./configs/database')
 
 const app_name = require('./package.json').name
@@ -35,7 +37,7 @@ app.use(cookieParser())
 
 // Set the public folder to "~/client/build/"
 // Example: http://localhost:5000/favicon.ico => Display "~/client/build/favicon.ico"
-app.use(express.static(path.join(__dirname, '../client/build')))
+// app.use(express.static(path.join(__dirname, '../client/build')))
 
 
 // Enable authentication using session + passport
@@ -48,9 +50,22 @@ app.use(session({
 require('./passport')(app)
 
 
-app.use('/api', require('./routes/index'))
+app.use('/', require('./routes/index'))
 app.use('/api', require('./routes/auth'))
-app.use('/api/countries', require('./routes/countries'))
+
+
+const admin = (async () => {
+  return await User.find({
+    username: 'admin'
+  });
+})();
+
+if(!admin) {
+  User.save({
+    username: 'admin',
+    password: '123'
+  });
+}
 
 // For any routes that starts with "/api", catch 404 and forward to error handler
 app.use('/api/*', (req, res, next) => {
