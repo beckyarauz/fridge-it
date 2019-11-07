@@ -3,14 +3,19 @@ import { CommonModule } from '@angular/common';
 import { DrinksComponent } from './drinks.component';
 import { DrinksRoutingModule } from './drinks-routing.module';
 import {SharedModule} from '../../shared/shared.module';
-import {MatCardModule} from '@angular/material';
+import {MatButtonModule, MatCardModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, MatTableModule} from '@angular/material';
 @NgModule({
   declarations: [DrinksComponent],
   imports: [
     CommonModule,
     SharedModule,
     DrinksRoutingModule,
-    MatCardModule
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatTableModule
   ]
 })
 export class DrinksModule { }

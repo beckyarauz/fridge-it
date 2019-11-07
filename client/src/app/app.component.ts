@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   title = 'fridge-it';
 
   ngOnInit() {
-    this.userService.populate();
+    // this.userService.populate();
   }
 
   logout() {

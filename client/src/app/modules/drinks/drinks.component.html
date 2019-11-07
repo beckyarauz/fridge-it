@@ -2,8 +2,25 @@
   <mat-card>
     <mat-card-title>Drinks</mat-card-title>
   </mat-card>
+  <form [formGroup]="drinksForm">
 
-  <mat-card *ngFor="let drink of drinks">
-    <mat-card-title>{{drink.details.name}}</mat-card-title>
+  <mat-card *ngFor="let drink of drinks" id="{{drink.id}}" class="drink-row">
+    <mat-checkbox (change)="toggleDrink($event)" value="{{drink.id}}"></mat-checkbox>
+    <div class="drink">
+      <mat-card-title class="drink-title">{{drink.details.name}}</mat-card-title>
+      <div class="drink-buy">
+        <mat-form-field *ngIf="drink.id==drinkSelected" class="quantity-input">
+          <input matInput type="number" name="quantity" formControlName="quantity">
+        </mat-form-field>
+        <button
+          mat-raised-button
+          class="buy-btn"
+          (click)="buyDrink()"
+          *ngIf="drink.id==drinkSelected">
+          Buy
+        </button>
+      </div>
+    </div>
   </mat-card>
+  </form>
 </div>

@@ -2,16 +2,16 @@
   <mat-sidenav-container id="app-sidebar-container" fxLayout>
     <mat-sidenav #sidenav mode="side" id="sidebar" fxLayout
                  fxLayout.xs="column">
-      <button mat-raised-button class="side-btn" color="primary">
+      <button mat-raised-button class="side-btn" color="primary" routerLink="/drinks" (click)="sidenav.toggle()">
         Drinks
       </button>
-      <button mat-raised-button class="side-btn" color="accent">
+      <button mat-raised-button class="side-btn" color="accent" (click)="sidenav.toggle()">
         Profile
       </button>
-      <button mat-raised-button class="side-btn" routerLink="/login">
+      <button mat-raised-button class="side-btn" routerLink="/login" (click)="sidenav.toggle()">
         Log In
       </button>
-      <button mat-raised-button class="side-btn" (click)="logout()">
+      <button mat-raised-button class="side-btn" (click)="logout()" (click)="sidenav.toggle()">
         Log Out
       </button>
 
@@ -21,13 +21,9 @@
         <button mat-button (click)="sidenav.toggle()">
           <mat-icon aria-hidden="false" aria-label="expand sideNav">list</mat-icon>
         </button>
+        <div><h1>{{title}}</h1></div>
       </div>
       <div id="main-content">
-        <mat-card id="app-title">
-          <h1>
-            {{ title }}
-          </h1>
-        </mat-card>
         <router-outlet></router-outlet>
       </div>
     </mat-sidenav-content>
