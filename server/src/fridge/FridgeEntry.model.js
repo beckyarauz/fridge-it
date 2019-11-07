@@ -13,6 +13,14 @@ FridgeEntry = function (drink, quantity) {
       return _drink;
     },
 
+    isOnStock: function (quantity) {
+      if (_quantity <= 0 || _quantity - quantity <= 0) {
+        return false;
+      }
+
+      return true;
+    },
+
     add: function (quantity) {
       if (!_.isNumber(quantity)) {
         throw new Error("not a number");
