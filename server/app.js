@@ -91,9 +91,9 @@ app.use((err, req, res, next) => {
     res.status(err.status || 500);
 
     // A limited amount of information sent in production
-    if (process.env.NODE_ENV === 'production')
+    if (process.env.NODE_ENV === 'production') {
       res.json(err);
-    else
+    } else
       res.json(JSON.parse(JSON.stringify(err, Object.getOwnPropertyNames(err))))
   }
 });

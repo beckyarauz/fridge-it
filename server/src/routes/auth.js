@@ -8,20 +8,20 @@ const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 
 router.post('/signup', (req, res, next) => {
-  const { username, password, name } = req.body;
+  const {username, password, name} = req.body;
   if (!username || !password) {
-    res.status(400).json({ message: "Indicate username and password" });
+    res.status(400).json({message: "Indicate username and password"});
     return
   }
   User.findOne({ username })
     .then(userDoc => {
       if (userDoc !== null) {
-        res.status(409).json({ message: "The username already exists" });
+        res.status(409).json({message: "The username already exists"});
         return
       }
       const salt = bcrypt.genSaltSync(bcryptSalt);
       const hashPass = bcrypt.hashSync(password, salt);
-      const newUser = new User({ username, password: hashPass, name });
+      const newUser = new User({username, password: hashPass, name});
       return newUser.save()
     })
     .then(userSaved => {
@@ -38,7 +38,7 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.post("/login", (req, res, next) => {
-  const { username, password } = req.body;
+  const {username, password} = req.body;
 
   // first check to see if there's a document with that username
   User.findOne({ username })
@@ -73,7 +73,7 @@ router.post("/login", (req, res, next) => {
 router.post('/login-with-passport-local-strategy', (req, res, next) => {
   passport.authenticate('local', (err, theUser, failureDetails) => {
     if (err) {
-      res.status(500).json({ message: 'Something went wrong' });
+      res.status(500).json({message: 'Something went wrong'});
       return
     }
 
@@ -84,7 +84,7 @@ router.post('/login-with-passport-local-strategy', (req, res, next) => {
 
     req.login(theUser, (err) => {
       if (err) {
-        res.status(500).json({ message: 'Something went wrong' });
+        res.status(500).json({message: 'Something went wrong'});
         return
       }
 
