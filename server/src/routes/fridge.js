@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const _ = require('lodash');
-const fridge = require('../fridge').FridgeService;
 
+const fridge = require('../fridge').FridgeService;
+const drinkService = require('../drink').DrinkService;
 
 router.get('/drinks', (req, res, next) => {
   res.json({
@@ -33,11 +34,43 @@ router.post('/drinks/retrieve', (req, res, next) => {
       error: true,
       message: 'drink not on stock'
     });
+
+    return;
   }
 
   fridge.retrieve(drinkId, quantity);
 
   next(res);
+});
+
+router.post('/drinks/stockUp', (req, res, next) => {
+  const drinks = req.body.drinks;
+
+  let response = [];
+
+  _.forEach(drinks, stockDrink => {
+    const drink = drinkService.get(stockDrink.id);
+
+    if (!drink) {
+      response.push({ error: true, message: "drink does not exist", drinkId: stockDrink.id});
+
+      return;
+    }
+
+    if (!_.isNumber(stockDrink.quantity)) {
+      response.push({ error: true, message: "quantity must be number", drinkId: stockDrink.id});
+
+
+      return;
+    }
+
+    fridge.add(drink, stockDrink.quantity);
+    response.push({ error: false, message: "drink stocked up", drinkId: stockDrink.id});
+  });
+
+  res.status(200).json({
+    result: response
+  });
 });
 
 module.exports = router;
