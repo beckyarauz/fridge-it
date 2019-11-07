@@ -1,7 +1,6 @@
-const express = require('express');
-const balance = require('../balance').BalanceService;
+const router = require('express').Router();
 
-const router = express.Router();
+const balance = require('../balance').BalanceService;
 
 const staticData = [
   {
@@ -14,14 +13,14 @@ const staticData = [
   }
 ];
 
-router.get('/', (req, res) => {
+router.get('/user/', (req, res) => {
   staticData.forEach((user) => {
     user.balance = balance.get(user.id);
   });
   res.json(staticData);
 });
 
-router.get('/:userId', (req, res) => {
+router.get('/user/:userId', (req, res) => {
   const user = staticData.find((elem) => elem.id === req.params.userId);
   user.balance = balance.get(user.id);
 

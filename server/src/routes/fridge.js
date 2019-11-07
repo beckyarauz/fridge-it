@@ -1,5 +1,6 @@
-const router = require("express").Router();
 const _ = require('lodash');
+
+const router = require('express').Router();
 
 const fridge = require('../fridge').FridgeService;
 const drinkService = require('../drink').DrinkService;
@@ -17,57 +18,50 @@ const drinkService = require('../drink').DrinkService;
  *         schema:
  *           type: object
  *           properties:
- *             error:
- *               type: boolean
- *               description: indicates if there was an error
  *             drinks:
  *               type: array
  *               descripton: list of available drinks (if error false)
  *               items:
  *                 $ref: '#/definitions/drinks'
  */
-router.get('/drinks', (req, res, next) => {
+router.get('/fridge/drinks', (req, res, next) => {
+
+  /**
+   * @swagger
+   * definition:
+   *   drinks:
+   *     properties:
+   *       id:
+   *         type: string
+   *       details:
+   *         type: object
+   *         properties:
+   *          name:
+   *            type: string
+   *          image:
+   *            type: string
+   *          basePrice:
+   *            type: number
+   *            format: float
+   *
+   *       quantity:
+   *         type: integer
+   */
   res.json({
-    error: false,
     drinks: _.map(fridge.list(), entry => {
       return {
         id: entry.getDrink().getId(),
         details: entry.getDrink().getDetails(),
         quantity: entry.getQuantity()
       }
+
     })
   });
 });
 
-router.post('/drinks/retrieve', (req, res, next) => {
-  const {drinkId, quantity} = req.body;
-
-  if (!_.isNumber(quantity)) {
-    res.status(400).json({
-      error: true,
-      message: 'quantity must be a number'
-    });
-
-    return;
-  }
-
-  if (!fridge.isOnStock(drinkId, quantity)) {
-    res.status(404).json({
-      error: true,
-      message: 'drink not on stock'
-    });
-
-    return;
-  }
-
-  fridge.retrieve(drinkId, quantity);
-
-  res.status(200).json({error: false, message: "drink retrieved"});
-});
-
 /**
  * @swagger
- * /api/fridge/drinks/stockUp:
+ * /api/fridge/drinks:
  *   post:
  *     description: Returns all currently available drinks
  *     produces:
@@ -83,98 +77,67 @@ router.post('/drinks/retrieve', (req, res, next) => {
  *               type: array
  *               description: list of drinks to add
  *               items:
- *                 $ref: '#/definitions/reqStockUp'
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     description: the drink id
+ *                     required: true
+ *                   quantity:
+ *                     type: integer
+ *                     description: the amount to refill
+ *                     required: true
  *     responses:
  *       200:
  *         schema:
  *           type: object
  *           properties:
- *             error:
- *               type: boolean
- *               description: indicates if there was an error
  *             drinks:
  *               type: array
  *               description: list of available drinks (if error false)
  *               items:
- *                 $ref: '#/definitions/respStockUp'
+ *                 $ref: '#/definitions/respRefill'
  */
-router.post('/drinks/stockUp', (req, res, next) => {
-  const drinks = req.body.drinks;
+router.post('/fridge/drinks', (req, res, next) => {
+  const refills = req.body.drinks;
 
   let response = [];
 
-  _.forEach(drinks, stockDrink => {
-    const drink = drinkService.get(stockDrink.id);
+  _.forEach(refills, refill => {
+    const drink = drinkService.get(refill.id);
 
     if (!drink) {
-      response.push({error: true, message: "drink does not exist", drinkId: stockDrink.id});
+      response.push({error: true, message: "drink does not exist", drinkId: refill.id});
 
       return;
     }
 
-    if (!_.isNumber(stockDrink.quantity)) {
-      response.push({error: true, message: "quantity must be number", drinkId: stockDrink.id});
+    if (!_.isNumber(refill.quantity)) {
+      response.push({error: true, message: "quantity must be number", drinkId: refill.id});
 
       return;
     }
 
-    fridge.add(drink, stockDrink.quantity);
+    fridge.add(drink, refill.quantity);
 
-    response.push({error: false, message: "drink stocked up", drinkId: stockDrink.id});
+    response.push({error: false, message: "drink stocked up", drinkId: refill.id});
   });
 
+  /**
+   * @swagger
+   * definition:
+   *   respRefill:
+   *     properties:
+   *       error:
+   *         type: boolean
+   *       message:
+   *         type: string
+   *       drinkId:
+   *         type: string
+   */
   res.status(200).json({
     result: response
   });
 });
-
-/**
- * @swagger
- * definition:
- *   drinks:
- *     properties:
- *       id:
- *         type: string
- *       details:
- *         type: object
- *         properties:
- *          name:
- *            type: string
- *          image:
- *            type: string
- *          basePrice:
- *            type: double
- *
- *       quantity:
- *         type: integer
- */
-
-/**
- * @swagger
- * definition:
- *   respStockUp:
- *     properties:
- *       error:
- *         type: boolean
- *       message:
- *         type: string
- *       drinkId:
- *         type: string
- */
-
-/**
- * @swagger
- * definition:
- *   reqStockUp:
- *     properties:
- *       id:
- *         type: string
- *         description: the drink id
- *         required: true
- *       quantity:
- *         type: integer
- *         description: the amount to refill
- *         required: true
- */
 
 module.exports = router;
