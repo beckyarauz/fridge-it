@@ -11,7 +11,7 @@ export class FridgeService {
   ) {}
 
   getDrink(drinkId, quantity) {
-    return this.api.post('/fridge/retrieve', {
+    return this.api.post('/fridge/drinks/retrieve', {
       drinkId, quantity
     })
       .subscribe(
