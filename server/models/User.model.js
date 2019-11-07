@@ -3,7 +3,9 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   username: String,
-  password: String
+  password: String,
+  balance: number,
+  transactions:[{ type: Schema.Types.ObjectId, ref: 'Transactions' }],
 }, {
     timestamps: {
       createdAt: 'created_at',

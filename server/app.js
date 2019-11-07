@@ -11,7 +11,7 @@ const nocache = require('nocache');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
-const User = require('./models/User');
+const User = require('./models/User.model');
 
 require('./configs/database');
 
