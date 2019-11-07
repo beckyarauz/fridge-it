@@ -48,6 +48,7 @@ require('./src/passport')(app);
 app.use('/api', require('./src/routes/index'));
 app.use('/api/auth', require('./src/routes/auth'));
 app.use('/api/fridge', require('./src/routes/fridge'));
+app.use('/api/profile', require('./src/routes/profile'));
 
 console.log(User);
 
