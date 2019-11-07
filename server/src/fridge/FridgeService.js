@@ -19,14 +19,14 @@ class FridgeService {
     this.stock[drink.getId()] = entry;
   }
 
-  isOnStrock(drinkId, quantity) {
+  isOnStock(drinkId, quantity) {
     let entry = this.stock[drinkId];
 
     if (!entry) {
       return false;
     }
 
-    if (entry.isOnStock(quantity)) {
+    if (!entry.isOnStock(quantity)) {
       return false;
     }
 

@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const Drink = require('./Drink.model');
 
 class DrinkService {
   constructor() {
@@ -9,12 +10,16 @@ class DrinkService {
     return _.toArray(this.drinks);
   }
 
-  add(drink) {
-    if (this.drinks[drink.getId()]) {
+  add(id, details) {
+    if (this.drinks[id]) {
       throw new Error("drink already present");
     }
 
-    this.drinks[drink.getId()] = drink;
+    this.drinks[id] = Drink(id, details);
+  }
+
+  get(drinkId) {
+    return this.drinks[drinkId];
   }
 }
 
