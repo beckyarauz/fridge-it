@@ -45,42 +45,41 @@ app.use(session({
 require('./passport')(app);
 
 
-app.use('/', require('./routes/index'));
-app.use('/api', require('./routes/auth'));
+app.use('/api', require('./routes/index'));
+app.use('/api/auth', require('./routes/auth'));
 
-// let admin;
-//
-// (async () => {
-//   try {
-//     admin = await User.find({
-//       username: 'admin'
-//     });
-//
-//     let users = await User.find({}).lean.exec();
-//     console.log(users);
-//
-//     if(!admin) {
-//       User.save({
-//         username: 'admin',
-//         password: '123'
-//       });
-//     }
-//   } catch (e) {
-//     console.log(e.message)
-//   }
-// })();
+
+console.log(User);
+
+
+let admin;
+
+(async (User) => {
+  try {
+    admin = await User.find({username: 'admin'});
+
+    if(!admin) {
+      User.create({
+        username: 'admin',
+        password: '123'
+      });
+    }
+  } catch (e) {
+    console.log(e.message)
+  }
+})(User);
 
 // For any routes that starts with "/api", catch 404 and forward to error handler
 app.use('/api/*', (req, res, next) => {
-  let err = new Error('Not Found')
-  err.status = 404
+  let err = new Error('Not Found');
+  err.status = 404;
   next(err)
-})
+});
 
 // For any other routes, redirect to the index.html file of React
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'))
-})
+  res.sendFile(path.join(__dirname, '../client/dist/fridge-it/index.html'))
+});
 
 // Error handler
 app.use((err, req, res, next) => {
