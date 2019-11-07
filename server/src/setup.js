@@ -28,5 +28,7 @@ drinkService.add("club_mate", {
 });
 
 _.forEach(drinkService.list(), drink => {
+  if (drink.getId() === "cola") return;
+
   fridgeService.add(drink, _.random(1, 10));
 });

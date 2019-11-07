@@ -29,7 +29,7 @@ router.post('/drinks/retrieve', (req, res, next) => {
     return;
   }
 
-  if (!fridge.isOnStrock(drinkId, quantity)) {
+  if (!fridge.isOnStock(drinkId, quantity)) {
     res.status(404).json({
       error: true,
       message: 'drink not on stock'
