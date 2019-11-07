@@ -1,5 +1,6 @@
-const router = require("express").Router();
 const _ = require('lodash');
+
+const router = require('express').Router();
 
 const fridge = require('../fridge').FridgeService;
 const drinkService = require('../drink').DrinkService;
@@ -17,24 +18,43 @@ const drinkService = require('../drink').DrinkService;
  *         schema:
  *           type: object
  *           properties:
- *             error:
- *               type: boolean
- *               description: indicates if there was an error
  *             drinks:
  *               type: array
  *               descripton: list of available drinks (if error false)
  *               items:
  *                 $ref: '#/definitions/drinks'
  */
-router.get('/drinks', (req, res, next) => {
+router.get('/fridge/drinks', (req, res, next) => {
+
+  /**
+   * @swagger
+   * definition:
+   *   drinks:
+   *     properties:
+   *       id:
+   *         type: string
+   *       details:
+   *         type: object
+   *         properties:
+   *          name:
+   *            type: string
+   *          image:
+   *            type: string
+   *          basePrice:
+   *            type: number
+   *            format: float
+   *
+   *       quantity:
+   *         type: integer
+   */
   res.json({
-    error: false,
     drinks: _.map(fridge.list(), entry => {
       return {
         id: entry.getDrink().getId(),
         details: entry.getDrink().getDetails(),
         quantity: entry.getQuantity()
       }
+
     })
   });
 });
@@ -57,22 +77,28 @@ router.get('/drinks', (req, res, next) => {
  *               type: array
  *               description: list of drinks to add
  *               items:
- *                 $ref: '#/definitions/reqRefill'
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     description: the drink id
+ *                     required: true
+ *                   quantity:
+ *                     type: integer
+ *                     description: the amount to refill
+ *                     required: true
  *     responses:
  *       200:
  *         schema:
  *           type: object
  *           properties:
- *             error:
- *               type: boolean
- *               description: indicates if there was an error
  *             drinks:
  *               type: array
  *               description: list of available drinks (if error false)
  *               items:
  *                 $ref: '#/definitions/respRefill'
  */
-router.post('/drinks', (req, res, next) => {
+router.post('/fridge/drinks', (req, res, next) => {
   const refills = req.body.drinks;
 
   let response = [];
@@ -97,58 +123,21 @@ router.post('/drinks', (req, res, next) => {
     response.push({error: false, message: "drink stocked up", drinkId: refill.id});
   });
 
+  /**
+   * @swagger
+   * definition:
+   *   respRefill:
+   *     properties:
+   *       error:
+   *         type: boolean
+   *       message:
+   *         type: string
+   *       drinkId:
+   *         type: string
+   */
   res.status(200).json({
     result: response
   });
 });
-
-/**
- * @swagger
- * definition:
- *   drinks:
- *     properties:
- *       id:
- *         type: string
- *       details:
- *         type: object
- *         properties:
- *          name:
- *            type: string
- *          image:
- *            type: string
- *          basePrice:
- *            type: double
- *
- *       quantity:
- *         type: integer
- */
-
-/**
- * @swagger
- * definition:
- *   respRefill:
- *     properties:
- *       error:
- *         type: boolean
- *       message:
- *         type: string
- *       drinkId:
- *         type: string
- */
-
-/**
- * @swagger
- * definition:
- *   reqRefill:
- *     properties:
- *       id:
- *         type: string
- *         description: the drink id
- *         required: true
- *       quantity:
- *         type: integer
- *         description: the amount to refill
- *         required: true
- */
 
 module.exports = router;

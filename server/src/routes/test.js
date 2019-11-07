@@ -1,9 +1,10 @@
-const router = require("express").Router();
 const _ = require('lodash');
+
+const router = require('express').Router();
 
 const fridge = require('../fridge').FridgeService;
 
-router.post('/fridge/drinks/retrieve', (req, res, next) => {
+router.post('/test/fridge/drinks/retrieve', (req, res, next) => {
   const {drinkId, quantity} = req.body;
 
   if (!_.isNumber(quantity)) {
