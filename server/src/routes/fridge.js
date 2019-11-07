@@ -40,7 +40,7 @@ router.post('/drinks/retrieve', (req, res, next) => {
 
   fridge.retrieve(drinkId, quantity);
 
-  next(res);
+  res.status(200).json({error: false, message: "drink retrieved"});
 });
 
 router.post('/drinks/stockUp', (req, res, next) => {
@@ -60,11 +60,11 @@ router.post('/drinks/stockUp', (req, res, next) => {
     if (!_.isNumber(stockDrink.quantity)) {
       response.push({ error: true, message: "quantity must be number", drinkId: stockDrink.id});
 
-
       return;
     }
 
     fridge.add(drink, stockDrink.quantity);
+
     response.push({ error: false, message: "drink stocked up", drinkId: stockDrink.id});
   });
 
