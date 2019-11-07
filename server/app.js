@@ -11,7 +11,7 @@ const nocache = require('nocache');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
-const User = require('./models/User.model');
+const User = require('./src/models/User.model');
 
 require('./configs/database');
 
@@ -42,11 +42,11 @@ app.use(session({
   saveUninitialized: true,
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }))
-require('./passport')(app);
+require('./src/passport')(app);
 
 
-app.use('/api', require('./routes/index'));
-app.use('/api/auth', require('./routes/auth'));
+app.use('/api', require('./src/routes/index'));
+app.use('/api/auth', require('./src/routes/auth'));
 
 
 console.log(User);
@@ -83,19 +83,19 @@ app.get('*', (req, res) => {
 
 // Error handler
 app.use((err, req, res, next) => {
-  console.error("----- An error happened -----")
-  console.error(err)
+  console.error("----- An error happened -----");
+  console.error(err);
 
   // only render if the error ocurred before sending the response
   if (!res.headersSent) {
-    res.status(err.status || 500)
+    res.status(err.status || 500);
 
     // A limited amount of information sent in production
-    if (process.env.NODE_ENV === 'production')
-      res.json(err)
-    else
+    if (process.env.NODE_ENV === 'production') {
+      res.json(err);
+    } else
       res.json(JSON.parse(JSON.stringify(err, Object.getOwnPropertyNames(err))))
   }
-})
+});
 
-module.exports = app
+module.exports = app;
