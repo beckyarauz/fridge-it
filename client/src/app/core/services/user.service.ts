@@ -45,13 +45,15 @@ export class UserService {
     this.isAuthenticatedSubject.next(true);
   }
 
-  purgeAuth() {
+  async purgeAuth() {
     // Remove JWT from localstorage
     this.jwtService.destroyToken();
     // Set current user to an empty object
     this.currentUserSubject.next({} as User);
     // Set auth status to false
     this.isAuthenticatedSubject.next(false);
+
+    return await this.apiService.post('/auth/logout').toPromise();
   }
 
   attemptAuth(type, credentials): Observable<User> {

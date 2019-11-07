@@ -1,25 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { EnvService } from './core/services/env.service';
-import axios from 'axios';
+
+import { UserService } from './core/services/user.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass']
 })
-
 export class AppComponent implements OnInit {
+  constructor(
+    private router: Router,
+    private userService: UserService
+  ) {}
+
   title = 'fridge-it';
 
-  constructor(
-    private env: EnvService
-  ) {
-    if (env.enableDebug) {
-      console.log('Debug mode enabled!');
-    }
-  }
-  async ngOnInit(): Promise<void> {
-    axios.get(`${this.env.apiUrl}`);
+  ngOnInit() {
+    this.userService.populate();
   }
 
+  logout() {
+    this.userService.purgeAuth();
+    this.router.navigateByUrl('/');
+  }
 }

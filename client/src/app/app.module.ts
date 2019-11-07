@@ -16,6 +16,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatIconModule} from '@angular/material/icon';
 
 import { AuthModule } from './modules/auth/auth.module';
+import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +36,11 @@ import { AuthModule } from './modules/auth/auth.module';
     MatCardModule,
     MatCheckboxModule,
     FormsModule,
-    MatButtonModule
+    MatButtonModule,
+    CoreModule,
+    SharedModule,
+    AuthModule,
+    AppRoutingModule
   ],
   providers: [EnvServiceProvider],
   bootstrap: [AppComponent]

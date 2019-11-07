@@ -1,36 +1,35 @@
-<div style="text-align:center" id="app-container">
-  <mat-sidenav-container id="app-sidebar-container">
+<div id="app-container" fxLayout>
+  <mat-sidenav-container id="app-sidebar-container" fxLayout>
     <mat-sidenav #sidenav mode="side" id="sidebar" fxLayout
                  fxLayout.xs="column">
       <button mat-raised-button class="side-btn" color="primary">
-        Buy Drink
+        Drinks
       </button>
-        <button mat-raised-button class="side-btn" color="accent">
-        Drinks Bought
-        </button>
-      <button mat-raised-button class="side-btn">Click me!</button>
+      <button mat-raised-button class="side-btn" color="accent">
+        Profile
+      </button>
+      <button mat-raised-button class="side-btn" routerLink="/login">
+        Log In
+      </button>
+      <button mat-raised-button class="side-btn" (click)="logout()">
+        Log Out
+      </button>
 
     </mat-sidenav>
-    <mat-sidenav-content fxLayout>
+    <mat-sidenav-content fxFlexFill>
       <div id="sidebar-toggler">
         <button mat-button (click)="sidenav.toggle()">
           <mat-icon aria-hidden="false" aria-label="expand sideNav">list</mat-icon>
         </button>
       </div>
       <div id="main-content">
-        <h1>
-          Welcome to {{ title }}!
-        </h1>
-        <mat-card>
-          <img mat-card-image />
-          <mat-card-title>Simple card</mat-card-title>
-          <mat-slider min="1" max="1000" step="1" value="1"></mat-slider>
-          <mat-card-content>content</mat-card-content>
+        <mat-card id="app-title">
+          <h1>
+            {{ title }}
+          </h1>
         </mat-card>
+        <router-outlet></router-outlet>
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
-
-
-<router-outlet></router-outlet>

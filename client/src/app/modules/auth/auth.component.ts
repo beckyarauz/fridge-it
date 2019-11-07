@@ -6,7 +6,8 @@ import { UserService } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-auth-page',
-  templateUrl: './auth.component.html'
+  templateUrl: './auth.component.html',
+  styleUrls: ['./auth.component.sass']
 })
 export class AuthComponent implements OnInit {
   authType = '';
@@ -38,6 +39,10 @@ export class AuthComponent implements OnInit {
       //   this.authForm.addControl('username', new FormControl());
       // } // check for controls
     });
+  }
+
+  getFormValue(type: string) {
+    return this.authForm.get(type).value;
   }
 
   submitForm() {
