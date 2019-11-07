@@ -8,11 +8,21 @@ const swaggerDefinition = {
   },
   host: 'localhost:3000',
   basePath: '/',
+  tags: [
+    {
+      name: 'drinks',
+      description: 'all about drinks'
+    },
+    {
+      name: 'fridge',
+      description: 'heart of fridgeIT'
+    }
+  ]
 };
 
 const options = {
   swaggerDefinition: swaggerDefinition,
-  apis: ['./**/routes/*.js','routes.js'],// pass all in array
+  apis: ['./**/routes/*.js', 'routes.js'],// pass all in array
 };
 
 module.exports = swaggerJSDoc(options);

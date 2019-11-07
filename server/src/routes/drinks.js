@@ -33,6 +33,7 @@ const DrinkDto = drink => {
  * @swagger
  * /api/drinks:
  *   get:
+ *     tags: [drinks]
  *     description: Returns all drinks
  *     produces:
  *       - application/json
@@ -58,6 +59,7 @@ router.get('/drinks/', (req, res, next) => {
  * @swagger
  * /api/drinks/{id}:
  *   get:
+ *     tags: [drinks]
  *     description: Returns all drinks
  *     produces:
  *       - application/json
