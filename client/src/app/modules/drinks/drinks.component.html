@@ -1,0 +1,9 @@
+<div id="drinks-page">
+  <mat-card>
+    <mat-card-title>Drinks</mat-card-title>
+  </mat-card>
+
+  <mat-card *ngFor="let drink of drinks">
+    <mat-card-title>{{drink.details.name}}</mat-card-title>
+  </mat-card>
+</div>
