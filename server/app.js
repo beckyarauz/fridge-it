@@ -42,11 +42,11 @@ app.use(session({
   saveUninitialized: true,
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }))
-require('./passport')(app);
+require('./src/passport')(app);
 
 
-app.use('/api', require('./routes/index'));
-app.use('/api/auth', require('./routes/auth'));
+app.use('/api', require('./src/routes/index'));
+app.use('/api/auth', require('./src/routes/auth'));
 
 
 console.log(User);
