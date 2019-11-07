@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   username: String,
   password: String,
-  balance: number,
+  balance: Number,
   transactions:[{ type: Schema.Types.ObjectId, ref: 'Transactions' }],
 }, {
     timestamps: {
