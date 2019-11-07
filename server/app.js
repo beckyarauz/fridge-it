@@ -10,6 +10,8 @@ const logger = require('morgan');
 const nocache = require('nocache');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const passport = require('passport');
+const bcrypt = require("bcrypt");
 
 require('./src/setup');
 
@@ -32,27 +34,55 @@ app.use(cors({
   optionsSuccessStatus: 200,
   credentials: true
 }));
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+const LocalStrategy = require('passport-local').Strategy;
+
 // Enable authentication using session + passport
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'fridgeit',
+  secret: process.env.SESSION_SECRET || 'irongenerator',
   resave: true,
   saveUninitialized: true,
   store: new MongoStore({ mongooseConnection: mongoose.connection })
-}))
-require('./src/passport')(app);
+}));
 
+passport.serializeUser((user, cb) => {
+  cb(null, user._id);
+});
+
+passport.deserializeUser((id, cb) => {
+  User.findById(id, (err, user) => {
+    if (err) { return cb(err); }
+    cb(null, user);
+  });
+});
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.findOne({ username: username }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username' });
+      }
+      if (!bcrypt.compareSync(password, user.password)) {
+        return done(null,false,{message: 'Incorrect password'});
+      }
+      return done(null, user);
+    });
+  }
+));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/api', require('./src/routes/index'));
 app.use('/api/auth', require('./src/routes/auth'));
 app.use('/api/fridge', require('./src/routes/fridge'));
 app.use('/api/profile', require('./src/routes/profile'));
-
-console.log(User);
 
 
 let admin;

@@ -19,27 +19,32 @@ export class ApiService {
   }
 
   get(path: string, params: HttpParams = new HttpParams()): Observable<any> {
-    return this.http.get(`${this.environment.apiUrl}${path}`, { params })
+    return this.http.get(
+      `${this.environment.apiUrl}${path}`,
+      { params, withCredentials: true })
       .pipe(catchError(this.formatErrors));
   }
 
   put(path: string, body: object = {}): Observable<any> {
     return this.http.put(
       `${this.environment.apiUrl}${path}`,
-      JSON.stringify(body)
+      JSON.stringify(body),
+      { withCredentials: true }
     ).pipe(catchError(this.formatErrors));
   }
 
   post(path: string, body: object = {}): Observable<any> {
     return this.http.post(
       `${this.environment.apiUrl}${path}`,
-      JSON.stringify(body)
+      JSON.stringify(body),
+      {  withCredentials: true }
     ).pipe(catchError(this.formatErrors));
   }
 
   delete(path): Observable<any> {
     return this.http.delete(
-      `${this.environment.apiUrl}${path}`
+      `${this.environment.apiUrl}${path}`,
+      { withCredentials: true }
     ).pipe(catchError(this.formatErrors));
   }
 }

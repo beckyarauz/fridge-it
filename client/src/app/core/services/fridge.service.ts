@@ -10,7 +10,7 @@ export class FridgeService {
     private api: ApiService,
   ) {}
 
-  getDrink(drinkId, quantity) {
+  buyDrink(drinkId, quantity) {
     return this.api.post('/fridge/drinks/retrieve', {
       drinkId, quantity
     })
@@ -18,6 +18,10 @@ export class FridgeService {
         data => 'Drinks Retrieved',
         error => error.message
       );
+  }
+
+  getDrinks() {
+    return this.api.get('/fridge/drinks');
   }
 
 }

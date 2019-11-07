@@ -34,7 +34,7 @@ export class DrinksComponent implements OnInit, ControlValueAccessor {
 
   ngOnInit() {
     this.buySelected = false;
-    this.api.get('/fridge/drinks').subscribe(
+    this.fridge.getDrinks().subscribe(
       data => {
         this.drinks = data.drinks;
       },
@@ -62,7 +62,7 @@ export class DrinksComponent implements OnInit, ControlValueAccessor {
   // }
 
   buyDrink() {
-    this.fridge.getDrink(this.drinkSelected, this.drinksForm.controls.quantity.value);
+    this.fridge.buyDrink(this.drinkSelected, this.drinksForm.controls.quantity.value);
   }
 
   writeValue(drink: string): void {

@@ -20,6 +20,10 @@ export class AppComponent implements OnInit {
     // this.userService.populate();
   }
 
+  async isLogged() {
+    this.userService.isLogged();
+  }
+
   logout() {
     this.userService.purgeAuth();
     this.router.navigateByUrl('/');

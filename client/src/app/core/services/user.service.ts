@@ -53,12 +53,12 @@ export class UserService {
     // Set auth status to false
     this.isAuthenticatedSubject.next(false);
 
-    return await this.apiService.post('/auth/logout').toPromise();
+    return await this.apiService.get('/auth/logout').toPromise();
   }
 
   attemptAuth(type, credentials): Observable<User> {
-    const route = (type === 'login') ? '/login' : '';
-    return this.apiService.post('/auth' + route, {user: credentials})
+    const {username, password} = credentials;
+    return this.apiService.post('/auth/login', {username, password})
       .pipe(map(
         data => {
           this.setAuth(data.user);
@@ -69,6 +69,11 @@ export class UserService {
 
   getCurrentUser(): User {
     return this.currentUserSubject.value;
+  }
+
+  async isLogged() {
+    const isLogged = await this.apiService.get('/auth/isLogged').toPromise();
+    console.log(isLogged);
   }
 
   // Update the user on the server (email, pass, etc)
