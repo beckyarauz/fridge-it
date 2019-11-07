@@ -1,37 +1,28 @@
 const router = require("express").Router();
+const _ = require('lodash');
+const fridge = require('../fridge').FridgeService;
+
 
 router.get('/drinks', (req, res, next) => {
-  res.json({
-    drinks: [
-      {
-        id: "cola",
-        quantity: 10,
-        details: {
-          name: "Cola",
-          image: "http//schoenesbild.to",
-          basePrice: 1.00
-        },
-      },
-      {
-        id: "monster_espresso",
-        quantity: 10,
-        details: {
-          name: "Monster Espresso",
-          image: "http//schoenesbild.to",
-          basePrice: 1.00
-        },
-      },
-      {
-        id: "club_mate",
-        quantity: 10,
-        details: {
-          name: "Club Mate",
-          image: "http//schoenesbild.to",
-          basePrice: 1.00
-        },
-      }
-    ]
-  });
+  res.json(_.map(fridge.list(), entry => {
+    return {
+      id: entry.getDrink().getId(),
+      details: entry.getDrink().getDetails(),
+      quantity: entry.getQuantity()
+    }
+  }));
+});
+
+router.post('/drinks/retrieve', (req, res, next) => {
+  if (!_.isNumber(req.body.quantity)) {
+    res.status(500).json({message: 'quantity must be a number'});
+
+    return;
+  }
+
+  fridge.retrieve(req.body.drinkId, req.body.quantity);
+
+  next(res);
 });
 
 module.exports = router;

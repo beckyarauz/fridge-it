@@ -8,6 +8,7 @@
     "debug": "DEBUG=server:* nodemon ./bin/www"
   },
   "dependencies": {
+    "lodash": "^4.17.15",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "connect-mongo": "^2.0.3",
