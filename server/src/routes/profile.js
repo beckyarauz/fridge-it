@@ -1,29 +1,32 @@
 const express = require('express');
+const balance = require('../balance').BalanceService;
 
 const router = express.Router();
 
 const staticData = [
   {
     id: "1234",
-    username: "Hans",
-    balance: 42.42
+    username: "Hans"
   },
   {
     id: "456",
-    username: "Broke-Bryan",
-    balance: -3.50
+    username: "Broke-Bryan"
   }
 ];
 
 router.get('/', (req, res) => {
+  staticData.forEach((user) => {
+    user.balance = balance.get(user.id);
+  });
   res.json(staticData);
 });
 
 router.get('/:userId', (req, res) => {
-  const data = staticData.find((elem) => elem.id === req.params.userId);
+  const user = staticData.find((elem) => elem.id === req.params.userId);
+  user.balance = balance.get(user.id);
 
-  if (data) {
-    res.json(data);
+  if (user) {
+    res.json(user);
   } else {
     res.sendStatus(404);
   }
