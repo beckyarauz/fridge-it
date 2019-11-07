@@ -7,6 +7,34 @@ const drinkService = require('../drink').DrinkService;
 
 /**
  * @swagger
+ * definition:
+ *   respRefill:
+ *     properties:
+ *       error:
+ *         type: boolean
+ *       message:
+ *         type: string
+ *       drinkId:
+ *         type: string
+ */
+const RefillDto = (error, message, drinkId) => {
+  return {
+    error: error,
+    message: message,
+    drinkId: drinkId
+  };
+};
+
+const RefillSuccess = (drinkId) => {
+  return RefillDto(false, 'drink refilled', drinkId);
+};
+
+const RefillFailed = (message, drinkId) => {
+  return RefillDto(true, message, drinkId);
+};
+
+/**
+ * @swagger
  * /api/fridge/drinks:
  *   get:
  *     description: Returns all currently available drinks
@@ -107,34 +135,22 @@ router.post('/fridge/drinks', (req, res, next) => {
     const drink = drinkService.get(refill.id);
 
     if (!drink) {
-      response.push({error: true, message: "drink does not exist", drinkId: refill.id});
+      response.push(RefillFailed("drink does not exist", refill.id));
 
       return;
     }
 
     if (!_.isNumber(refill.quantity)) {
-      response.push({error: true, message: "quantity must be number", drinkId: refill.id});
+      response.push(RefillFailed("quantity must be number", refill.id));
 
       return;
     }
 
     fridge.add(drink, refill.quantity);
 
-    response.push({error: false, message: "drink stocked up", drinkId: refill.id});
+    response.push(RefillSuccess(refill.id));
   });
 
-  /**
-   * @swagger
-   * definition:
-   *   respRefill:
-   *     properties:
-   *       error:
-   *         type: boolean
-   *       message:
-   *         type: string
-   *       drinkId:
-   *         type: string
-   */
   res.status(200).json({
     result: response
   });
