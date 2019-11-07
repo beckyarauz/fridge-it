@@ -4,9 +4,8 @@ import { Observable ,  BehaviorSubject ,  ReplaySubject } from 'rxjs';
 
 import { ApiService } from './api.service';
 import { JwtService } from './jwt.service';
-import { User } from '../models';
+import { User } from '../models/user.model';
 import { map ,  distinctUntilChanged } from 'rxjs/operators';
-
 
 @Injectable()
 export class UserService {
@@ -16,7 +15,7 @@ export class UserService {
   private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
   public isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
-  constructor (
+  constructor(
     private apiService: ApiService,
     private http: HttpClient,
     private jwtService: JwtService
@@ -40,7 +39,7 @@ export class UserService {
 
   setAuth(user: User) {
     // Save JWT sent from server in localstorage
-    this.jwtService.saveToken(user.token);
+    this.jwtService.saveToken('randomToken');
     // Set current user data into observable
     this.currentUserSubject.next(user);
     // Set isAuthenticated to true
@@ -58,7 +57,7 @@ export class UserService {
 
   attemptAuth(type, credentials): Observable<User> {
     const route = (type === 'login') ? '/login' : '';
-    return this.apiService.post('/users' + route, {user: credentials})
+    return this.apiService.post('/auth' + route, {user: credentials})
       .pipe(map(
         data => {
           this.setAuth(data.user);

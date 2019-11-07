@@ -2,13 +2,13 @@ import { NgModule } from '@angular/core';
 
 import { AuthComponent } from './auth.component';
 import { NoAuthGuard } from './no-auth-guard.service';
-// import { SharedModule } from '../shared';
-// import { AuthRoutingModule } from './auth-routing.module';
+import { SharedModule } from '../../shared/shared.module';
+import { AuthRoutingModule } from './auth-routing.module';
 
 @NgModule({
   imports: [
-    // SharedModule,
-    // AuthRoutingModule
+    SharedModule,
+    AuthRoutingModule
   ],
   declarations: [
     AuthComponent
