@@ -79,6 +79,10 @@ app.use('/api/*', (req, res, next) => {
   next(err)
 });
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require("./swagger");
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 // For any other routes, redirect to the index.html file of React
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/fridge-it/index.html'))
