@@ -26,7 +26,7 @@ class FridgeService {
       return false;
     }
 
-    if (entry.isOnStock(quantity)) {
+    if (!entry.isOnStock(quantity)) {
       return false;
     }
 

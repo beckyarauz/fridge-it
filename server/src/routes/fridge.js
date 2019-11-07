@@ -5,6 +5,7 @@ const fridge = require('../fridge').FridgeService;
 
 router.get('/drinks', (req, res, next) => {
   res.json({
+    error: false,
     drinks: _.map(fridge.list(), entry => {
       return {
         id: entry.getDrink().getId(),
@@ -19,13 +20,19 @@ router.post('/drinks/retrieve', (req, res, next) => {
   const {drinkId, quantity} = req.body;
 
   if (!_.isNumber(quantity)) {
-    res.status(400).json({message: 'quantity must be a number'});
+    res.status(400).json({
+      error: true,
+      message: 'quantity must be a number'
+    });
 
     return;
   }
 
   if (!fridge.isOnStrock(drinkId, quantity)) {
-    res.status(404).json({message: 'drink not on stock'});
+    res.status(404).json({
+      error: true,
+      message: 'drink not on stock'
+    });
   }
 
   fridge.retrieve(drinkId, quantity);
