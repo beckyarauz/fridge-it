@@ -1,26 +1,26 @@
-const path = require('path')
-require('dotenv').config({ path: path.join(__dirname, '.env') })
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const cookieParser = require('cookie-parser')
-const express = require('express')
-const mongoose = require('mongoose')
-const logger = require('morgan')
-const nocache = require('nocache')
-const session = require("express-session")
-const MongoStore = require('connect-mongo')(session)
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const express = require('express');
+const mongoose = require('mongoose');
+const logger = require('morgan');
+const nocache = require('nocache');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 const User = require('./models/User');
 
-require('./configs/database')
+require('./configs/database');
 
-const app_name = require('./package.json').name
-const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`)
+const app_name = require('./package.json').name;
+const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);
 
-const app = express()
+const app = express();
 
-app.use(nocache())
+app.use(nocache());
 
 // Set "Access-Control-Allow-Origin" header
 app.use(cors({
@@ -29,43 +29,46 @@ app.use(cors({
   },
   optionsSuccessStatus: 200,
   credentials: true
-}))
-app.use(logger('dev'))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(cookieParser())
-
-// Set the public folder to "~/client/build/"
-// Example: http://localhost:5000/favicon.ico => Display "~/client/build/favicon.ico"
-// app.use(express.static(path.join(__dirname, '../client/build')))
-
+}));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 // Enable authentication using session + passport
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'irongenerator',
+  secret: process.env.SESSION_SECRET || 'fridgeit',
   resave: true,
   saveUninitialized: true,
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }))
-require('./passport')(app)
+require('./passport')(app);
 
 
-app.use('/', require('./routes/index'))
-app.use('/api', require('./routes/auth'))
+app.use('/', require('./routes/index'));
+app.use('/api', require('./routes/auth'));
 
-
-const admin = (async () => {
-  return await User.find({
-    username: 'admin'
-  });
-})();
-
-if(!admin) {
-  User.save({
-    username: 'admin',
-    password: '123'
-  });
-}
+// let admin;
+//
+// (async () => {
+//   try {
+//     admin = await User.find({
+//       username: 'admin'
+//     });
+//
+//     let users = await User.find({}).lean.exec();
+//     console.log(users);
+//
+//     if(!admin) {
+//       User.save({
+//         username: 'admin',
+//         password: '123'
+//       });
+//     }
+//   } catch (e) {
+//     console.log(e.message)
+//   }
+// })();
 
 // For any routes that starts with "/api", catch 404 and forward to error handler
 app.use('/api/*', (req, res, next) => {
