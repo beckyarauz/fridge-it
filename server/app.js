@@ -52,6 +52,8 @@ app.use('/api/auth', require('./src/routes/auth'));
 app.use('/api/fridge', require('./src/routes/fridge'));
 app.use('/api/profile', require('./src/routes/profile'));
 
+app.use('/api/test', require('./src/routes/test'));
+
 console.log(User);
 
 
