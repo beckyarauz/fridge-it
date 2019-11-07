@@ -15,11 +15,14 @@ import {MatButtonModule} from '@angular/material/button';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatIconModule} from '@angular/material/icon';
 
+import { AuthModule } from './modules/auth/auth.module';
+
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    AuthModule,
     FlexLayoutModule,
     MatIconModule,
     BrowserModule,
