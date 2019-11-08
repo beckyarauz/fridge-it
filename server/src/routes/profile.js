@@ -22,10 +22,20 @@ router.get('/user/', (req, res) => {
 
 router.get('/user/:userId', (req, res) => {
   const user = staticData.find((elem) => elem.id === req.params.userId);
-  user.balance = balance.get(user.id);
 
   if (user) {
+    user.balance = balance.get(user.id);
     res.json(user);
+  } else {
+    res.sendStatus(404);
+  }
+});
+
+router.get('/user/:userId/history', (req, res) => {
+  const user = staticData.find((elem) => elem.id === req.params.userId);
+
+  if (user) {
+    res.json(balance.getHistory(user.id));
   } else {
     res.sendStatus(404);
   }
