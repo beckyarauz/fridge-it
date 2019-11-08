@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ProfileComponent } from './profile.component';
 import {SharedModule} from '../../shared/shared.module';
 import {ProfileRoutingModule} from './profile-routing.module';
-import {MatButtonModule, MatCardModule, MatTableModule} from '@angular/material';
+import {MatButtonModule, MatCardModule, MatTableModule, MatTabsModule} from '@angular/material';
 import {CdkTableModule} from '@angular/cdk/table';
 
 @NgModule({
@@ -15,7 +15,8 @@ import {CdkTableModule} from '@angular/cdk/table';
     MatCardModule,
     MatButtonModule,
     MatTableModule,
-    CdkTableModule
+    CdkTableModule,
+    MatTabsModule
   ]
 })
 export class ProfileModule { }
