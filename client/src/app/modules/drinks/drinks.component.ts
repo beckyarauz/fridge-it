@@ -47,11 +47,6 @@ export class DrinksComponent implements OnInit, ControlValueAccessor {
     );
   }
 
-  // selectDrink(drink) {
-  //   this.drinkSelected = drink;
-  //   this.drinksForm.controls.drinkId.setValue(drink);
-  // }
-
   toggleDrink(event) {
     if (event.checked) {
       this.drinkSelected = event.source.value;
@@ -61,10 +56,6 @@ export class DrinksComponent implements OnInit, ControlValueAccessor {
       this.drinkSelected = undefined;
     }
   }
-
-  // isSelected(drink) {
-  //
-  // }
 
   buyDrink() {
     this.fridge.buyDrink(this.drinkSelected, this.drinksForm.controls.quantity.value);

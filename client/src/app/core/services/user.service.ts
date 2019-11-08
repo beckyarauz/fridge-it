@@ -71,7 +71,23 @@ export class UserService {
   }
 
   getUserTransactions() {
-    // return this.apiService.get('/user/transactions');
+    const user = this.getCurrentUser();
+    return this.apiService.get(`/user/${user._id}/history`);
+    // return [
+    //     {type: 'balance', balanceDelta: 10 },
+    //     {type: 'balance', balanceDelta: 3 },
+    //     {type: 'balance', balanceDelta: -1 },
+    //     {type: 'balance', balanceDelta: 20 },
+    //     {type: 'balance', balanceDelta: -1 },
+    //     {type: 'balance', balanceDelta: -1 },
+    //     {type: 'purchase', product: 'cola', balanceDelta: -1 },
+    //     {type: 'purchase', product: 'mate', balanceDelta: -1 },
+    //     {type: 'purchase', product: 'water', balanceDelta: -1 },
+    //     {type: 'purchase', product: 'beer', balanceDelta: -1 },
+    //   ];
+  }
+
+  getMockUserTransactions() {
     return [
         {type: 'balance', balanceDelta: 10 },
         {type: 'balance', balanceDelta: 3 },
@@ -85,6 +101,7 @@ export class UserService {
         {type: 'purchase', product: 'beer', balanceDelta: -1 },
       ];
   }
+
 
   isLogged() {
     return this.apiService.get('/auth/isLogged');

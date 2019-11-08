@@ -9,44 +9,46 @@ import {DataService, UserService} from '../../core/services';
 export class ProfileComponent implements OnInit {
   transactions: any[];
   isLoggedIn = false;
-  balanceTransactions: {type: string, balanceDelta: number}[] = [];
+  balanceTransactions: any[] = [];
   balanceDisplayedColumns = ['type', 'balanceDelta'];
-  purchaseTransactions: {type: string, product: string, balanceDelta: number}[] = [];
+  purchaseTransactions: any[] = [];
 
-  purchaseDisplayedColumns: string[] = [ 'type', 'product', 'balanceDelta'];
-  purchaseDataSource = this.purchaseTransactions;
+  purchaseDisplayedColumns: string[] = [ 'type', 'product', 'quantity', 'price'];
+  purchaseDataSource;
   balanceDataSource = this.balanceTransactions;
 
   user: object;
+
+  history: any;
 
   constructor(
     private userService: UserService,
     private dataService: DataService
   ) { }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.isLogged().subscribe(
       data => {
-        // this.userService.getUserTransactions().subscribe(tran => {
-        //   this.transactions = tran;
-        // });
-
         this.userService.getUser()
           .subscribe(info => {
             this.user = info;
           });
-        this.transactions = this.userService.getUserTransactions();
-        this.transactions.forEach(t => {
-          t.type === 'purchase' ?
-            this.purchaseTransactions.push(t) :
-            this.balanceTransactions.push(t);
-        });
-        this.isLoggedIn = data.isLogged;
-        this.updateData(this.isLoggedIn);
+
+        this.userService.getUserTransactions()
+          .subscribe(tran => {
+            this.transactions = tran;
+            this.transactions.forEach(t => {
+              t.type === 'purchase' ?
+                this.purchaseTransactions.push(t) :
+                this.balanceTransactions.push(t);
+            });
+            this.purchaseDataSource = this.purchaseTransactions;
+            this.isLoggedIn = data.isLogged;
+            this.updateData(this.isLoggedIn);
+          });
       },
       error => console.log(error.message)
     );
-
   }
 
   updateData(value: boolean) {

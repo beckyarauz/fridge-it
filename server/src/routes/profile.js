@@ -26,12 +26,18 @@ router.get('/user/:userId', async (req, res) => {
   const user = await User.findOne({_id: req.params.userId}).exec();
 
   if (user) {
-
-    console.log(user);
     res.json(user);
   } else {
     res.sendStatus(404);
   }
+});
+
+router.get('/user/:userId/history', async (req, res) => {
+ if(req.user) {
+   res.json(balance.getHistory(req.params.userId));
+   return;
+ }
+  res.sendStatus(404);
 });
 
 module.exports = router;
