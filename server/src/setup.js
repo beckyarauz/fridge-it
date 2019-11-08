@@ -10,7 +10,7 @@ const fridgeService = require('./fridge').FridgeService;
       details: {
         name: "Cola",
         basePrice: 1.00,
-        image: "drinks/cola.png"
+        image: "https://image.flaschenpost.de/articles/small/517.png"
       }
     },
     {
@@ -18,7 +18,7 @@ const fridgeService = require('./fridge').FridgeService;
       details: {
         name: "Monster Espresso",
         basePrice: 1.00,
-        image: "drinks/monster_espresso.png"
+        image: "https://image.flaschenpost.de/articles/small/5760.png"
       }
     },
     {
@@ -26,7 +26,7 @@ const fridgeService = require('./fridge').FridgeService;
       details: {
         name: "Viva Con Agua Laut",
         basePrice: 1.00,
-        image: "drinks/viva_agua_laut.png"
+        image: "https://image.flaschenpost.de/articles/small/2115.png"
       }
     },
     {
@@ -34,7 +34,7 @@ const fridgeService = require('./fridge').FridgeService;
       details: {
         name: "Club Mate",
         basePrice: 1.00,
-        image: "drinks/club_mate.png"
+        image: "https://image.flaschenpost.de/articles/small/1526.png"
       }
     }
   ];
