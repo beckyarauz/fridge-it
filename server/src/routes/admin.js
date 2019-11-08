@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const transaction = require('../tranaction').TransactionService;
+const transaction = require('../transaction').TransactionService;
 const acl = require('../../middlewares').acl;
 
 router.post("/admin/:userId/balance/add", acl("admin"),
