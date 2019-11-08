@@ -12,6 +12,7 @@ module.exports = {
 
     'admin_balance_add': true,
     'admin_balance_remove': true,
+    'admin_drinks_add': true,
   },
   user: {
     'drinks_list': true,

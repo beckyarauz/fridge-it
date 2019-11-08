@@ -12,11 +12,13 @@ const acl = require('../../middlewares').acl;
  *     properties:
  *       id:
  *         type: string
+ *         required: true
  *       details:
  *         type: object
  *         properties:
  *          name:
  *            type: string
+ *            required: true
  *          image:
  *            type: string
  *          basePrice:

@@ -20,6 +20,10 @@ const swaggerDefinition = {
     {
       name: 'fridge',
       description: 'heart of fridgeIT'
+    },
+    {
+      name: 'admin',
+      description: 'fridgeIT management'
     }
   ],
   securityDefinitions: {
