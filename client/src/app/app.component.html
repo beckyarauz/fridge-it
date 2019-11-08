@@ -5,13 +5,13 @@
       <button mat-raised-button class="side-btn" color="primary" routerLink="/drinks" (click)="sidenav.toggle()">
         Drinks
       </button>
-      <button mat-raised-button class="side-btn" color="accent" (click)="isLogged()">
+      <button mat-raised-button class="side-btn" color="accent" routerLink="/profile" (click)="sidenav.toggle()">
         Profile
       </button>
       <button mat-raised-button class="side-btn" routerLink="/login" (click)="sidenav.toggle()">
         Log In
       </button>
-      <button mat-raised-button class="side-btn" (click)="logout()" (click)="sidenav.toggle()">
+      <button mat-raised-button *ngIf="isLoggedIn" class="side-btn" (click)="logout()" (click)="sidenav.toggle()">
         Log Out
       </button>
 

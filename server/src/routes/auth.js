@@ -77,8 +77,8 @@ router.post('/auth/login', async (req, res, next) => {
     if (!user) { return res.json({error:info.message}); }
     req.logIn(user, function(err) {
       if (err) { return next(err); }
-      user.password = undefined;
-      res.json(user);
+      const {username, _id} = user;
+      res.json({username, _id});
     });
   })(req, res, next);
 });
@@ -93,11 +93,10 @@ router.get('/auth/logout', (req, res) => {
 
 router.get('/auth/isLogged', (req, res) => {
   if (req.user !== undefined && req.user !== null) {
-    // if () {
     res.status(200).json({
       message: 'You are logged in',
       isLogged: true,
-      user: req.user.username
+      user: req.user._id
     })
 
   } else {
