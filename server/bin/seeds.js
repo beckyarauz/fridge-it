@@ -8,7 +8,7 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') })
 
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const User = require("./src/models/User.model");
+const User = require("../src/models/User.model");
 
 const bcryptSalt = 10;
 
@@ -18,10 +18,12 @@ let users = [
   {
     username: "alice",
     password: bcrypt.hashSync("alice", bcrypt.genSaltSync(bcryptSalt)),
+    role: 'admin'
   },
   {
     username: "bob",
     password: bcrypt.hashSync("bob", bcrypt.genSaltSync(bcryptSalt)),
+    role: 'user'
   }
 ]
 

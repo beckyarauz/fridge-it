@@ -5,6 +5,8 @@ const router = require('express').Router();
 const fridge = require('../fridge').FridgeService;
 const drinkService = require('../drink').DrinkService;
 
+const acl = require('../../middlewares').acl;
+
 /**
  * @swagger
  * definition:
@@ -37,6 +39,7 @@ const RefillFailed = (message, drinkId) => {
  * @swagger
  * /api/fridge/drinks:
  *   get:
+ *     tags: [fridge]
  *     description: Returns all currently available drinks
  *     produces:
  *       - application/json
@@ -52,7 +55,7 @@ const RefillFailed = (message, drinkId) => {
  *               items:
  *                 $ref: '#/definitions/drinks'
  */
-router.get('/fridge/drinks', (req, res, next) => {
+router.get('/fridge/drinks', acl('fridge_list'), (req, res, next) => {
 
   /**
    * @swagger
@@ -91,6 +94,7 @@ router.get('/fridge/drinks', (req, res, next) => {
  * @swagger
  * /api/fridge/drinks:
  *   post:
+ *     tags: [fridge]
  *     description: Returns all currently available drinks
  *     produces:
  *       - application/json
@@ -126,7 +130,7 @@ router.get('/fridge/drinks', (req, res, next) => {
  *               items:
  *                 $ref: '#/definitions/respRefill'
  */
-router.post('/fridge/drinks', (req, res, next) => {
+router.post('/fridge/drinks', acl('fridge_refill'), (req, res, next) => {
   const refills = req.body.drinks;
 
   let response = [];

@@ -3,6 +3,7 @@ const _ = require('lodash');
 const router = require('express').Router();
 
 const drinkService = require('../drink').DrinkService;
+const acl = require('../../middlewares').acl;
 
 /**
  * @swagger
@@ -49,7 +50,7 @@ const DrinkDto = drink => {
  *               items:
  *                 $ref: '#/definitions/drink'
  */
-router.get('/drinks/', (req, res, next) => {
+router.get('/drinks/', acl('drinks_list'), (req, res, next) => {
   res.status(200).json({
     drinks: _.map(drinkService.list(), DrinkDto)
   });
@@ -77,9 +78,8 @@ router.get('/drinks/', (req, res, next) => {
  *           properties:
  *             drink:
  *               $ref: '#/definitions/drink'
- *
  */
-router.get('/drinks/:id', (req, res, next) => {
+router.get('/drinks/:id', acl('drinks_list'), (req, res, next) => {
   res.status(200).json({
     drink: DrinkDto(drinkService.get(req.params.id))
   })
