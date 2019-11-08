@@ -42,7 +42,7 @@ router.post('/auth/signup', (req, res, next) => {
  * /api/auth/login:
  *   post:
  *     tags: [user]
- *     description: Logs in
+ *     summary: Logs in
  *     produces:
  *       - application/json
  *     parameters:
@@ -61,15 +61,9 @@ router.post('/auth/signup', (req, res, next) => {
  *               required: true
  *     responses:
  *       200:
- *         description: An array of drinks
- *         schema:
- *           type: object
- *           properties:
- *             drinks:
- *               type: array
- *               description: list of drinks
- *               items:
- *                 $ref: '#/definitions/drink'
+ *         description: user data
+ *       403:
+ *         description: unauthorized
  */
 router.post('/auth/login', async (req, res, next) => {
   passport.authenticate('local', function(err, user, info) {

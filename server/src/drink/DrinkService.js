@@ -1,25 +1,33 @@
 const _ = require('lodash');
-const Drink = require('./Drink.model');
+
+const Drink = require('./Drink.model').Drink;
+const DrinkEntry = require('./Drink.model').DrinkEntry;
 
 class DrinkService {
   constructor() {
     this.drinks = {};
   }
 
-  list() {
-    return _.toArray(this.drinks);
+  async list() {
+    return _.map(await Drink.find(), DrinkEntry);
   }
 
-  add(id, details) {
-    if (this.drinks[id]) {
-      throw new Error("drink already present");
+  async add(id, details) {
+    let entry = await Drink.findOne({drinkId: id});
+
+    if(entry) {
+      throw new Error('drink already existing');
     }
 
-    this.drinks[id] = Drink(id, details);
+    if (!entry) {
+      entry = Drink.create(id, details);
+    }
+
+    await entry.save();
   }
 
-  get(drinkId) {
-    return this.drinks[drinkId];
+  async get(drinkId) {
+    return DrinkEntry(await Drink.findOne({drinkId: drinkId}));
   }
 }
 

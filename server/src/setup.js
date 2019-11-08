@@ -3,32 +3,52 @@ const _ = require('lodash');
 const drinkService = require('./drink').DrinkService;
 const fridgeService = require('./fridge').FridgeService;
 
-drinkService.add("cola", {
-  name: "Cola",
-  basePrice: 1.00,
-  image: "drinks/cola.png"
-});
+(async () => {
+  const drinks = [
+    {
+      drinkId: 'cola',
+      details: {
+        name: "Cola",
+        basePrice: 1.00,
+        image: "drinks/cola.png"
+      }
+    },
+    {
+      drinkId: "monster_espresso",
+      details: {
+        name: "Monster Espresso",
+        basePrice: 1.00,
+        image: "drinks/monster_espresso.png"
+      }
+    },
+    {
+      drinkId: 'viva_agua_laut',
+      details: {
+        name: "Viva Con Agua Laut",
+        basePrice: 1.00,
+        image: "drinks/viva_agua_laut.png"
+      }
+    },
+    {
+      drinkId: 'club_mate',
+      details: {
+        name: "Club Mate",
+        basePrice: 1.00,
+        image: "drinks/club_mate.png"
+      }
+    }
+  ];
 
-drinkService.add("monster_espresso", {
-  name: "Monster Espresso",
-  basePrice: 1.00,
-  image: "drinks/monster_espresso.png"
-});
+  await _.forEach(drinks, async drink => {
+    if(!await drinkService.get(drink.drinkId)) {
+      await drinkService.add(drink.drinkId, drink.details);
+    }
+  });
 
-drinkService.add("viva_agua_laut", {
-  name: "Viva Con Agua Laut",
-  basePrice: 1.00,
-  image: "drinks/viva_agua_laut.png"
-});
+  await _.forEach(await drinkService.list(), async drink => {
+    if (drink.getDrinkId() === "cola") return;
 
-drinkService.add("club_mate", {
-  name: "Club Mate",
-  basePrice: 1.00,
-  image: "drinks/club_mate.png"
-});
+    await fridgeService.add(drink, _.random(1, 10));
+  });
+})();
 
-_.forEach(drinkService.list(), drink => {
-  if (drink.getId() === "cola") return;
-
-  fridgeService.add(drink, _.random(1, 10));
-});

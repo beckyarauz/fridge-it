@@ -1,40 +1,40 @@
 const _ = require('lodash');
 
-const FridgeEntry = require('./FridgeEntry.model');
+const Fridge = require('./FridgeEntry.model').Fridge;
+const FridgeEntry = require('./FridgeEntry.model').FridgeEntry;
+
 
 class FridgeService {
-  constructor() {
-    this.stock = {};
+  constructor() {}
+
+  async list() {
+    return _.map(await Fridge.find().populate('drink.reference'), FridgeEntry);
   }
 
-  list() {
-    return _.toArray(this.stock);
-  }
+  async add(drink, quantity) {
+    let entry = await Fridge.findByDrinkId(drink.getDrinkId());
 
-  add(drink, quantity) {
-    const entry = this.stock[drink.getId()] || new FridgeEntry(drink);
+    if (!entry) {
+      entry = Fridge.create(drink);
+    }
 
     entry.add(quantity);
 
-    this.stock[drink.getId()] = entry;
+    await entry.save();
   }
 
-  isOnStock(drinkId, quantity) {
-    let entry = this.stock[drinkId];
+  async isOnStock(drinkId, quantity) {
+    let entry = await Fridge.findByDrinkId(drinkId);
 
     if (!entry) {
       return false;
     }
 
-    if (!entry.isOnStock(quantity)) {
-      return false;
-    }
-
-    return true;
+    return entry.isOnStock(quantity);
   }
 
-  retrieve(drinkId, quantity) {
-    let entry = this.stock[drinkId];
+  async retrieve(drinkId, quantity) {
+    let entry = await Fridge.findByDrinkId(drinkId);
 
     if (!entry) {
       throw new Error('unknown drink');

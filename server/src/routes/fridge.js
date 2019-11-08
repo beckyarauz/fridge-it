@@ -40,7 +40,7 @@ const RefillFailed = (message, drinkId) => {
  * /api/fridge/drinks:
  *   get:
  *     tags: [fridge]
- *     description: Returns all currently available drinks
+ *     summary: Returns all currently available drinks
  *     produces:
  *       - application/json
  *     responses:
@@ -55,7 +55,7 @@ const RefillFailed = (message, drinkId) => {
  *               items:
  *                 $ref: '#/definitions/drinks'
  */
-router.get('/fridge/drinks', acl('fridge_list'), (req, res, next) => {
+router.get('/fridge/drinks', acl('fridge_list'), async (req, res, next) => {
 
   /**
    * @swagger
@@ -79,9 +79,9 @@ router.get('/fridge/drinks', acl('fridge_list'), (req, res, next) => {
    *         type: integer
    */
   res.json({
-    drinks: _.map(fridge.list(), entry => {
+    drinks: _.map(await fridge.list(), entry => {
       return {
-        id: entry.getDrink().getId(),
+        id: entry.getDrink().getDrinkId(),
         details: entry.getDrink().getDetails(),
         quantity: entry.getQuantity()
       }
@@ -94,7 +94,7 @@ router.get('/fridge/drinks', acl('fridge_list'), (req, res, next) => {
  * /api/fridge/drinks:
  *   post:
  *     tags: [fridge]
- *     description: Returns all currently available drinks
+ *     summary: Returns all currently available drinks
  *     produces:
  *       - application/json
  *     parameters:
@@ -129,33 +129,33 @@ router.get('/fridge/drinks', acl('fridge_list'), (req, res, next) => {
  *               items:
  *                 $ref: '#/definitions/respRefill'
  */
-router.post('/fridge/drinks', acl('fridge_refill'), (req, res, next) => {
+router.post('/fridge/drinks', acl('fridge_refill'), async (req, res, next) => {
   const refills = req.body.drinks;
+  const results = [];
 
-  let response = [];
-
-  _.forEach(refills, refill => {
-    const drink = drinkService.get(refill.id);
+  for(let i in refills) {
+    let refill = refills[i];
+    const drink = await drinkService.get(refill.id);
 
     if (!drink) {
-      response.push(RefillFailed("drink does not exist", refill.id));
+      results.push(RefillFailed("drink does not exist", refill.id));
 
-      return;
+      continue;
     }
 
     if (!_.isNumber(refill.quantity)) {
-      response.push(RefillFailed("quantity must be number", refill.id));
+      results.push(RefillFailed("quantity must be number", refill.id));
 
-      return;
+      continue;
     }
 
-    fridge.add(drink, refill.quantity);
+    await fridge.add(drink, refill.quantity);
 
-    response.push(RefillSuccess(refill.id));
-  });
+    results.push(RefillSuccess(refill.id));
+  }
 
   res.status(200).json({
-    result: response
+    result: results
   });
 });
 

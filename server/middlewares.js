@@ -20,12 +20,10 @@ const hasRight = (role, right) => {
 
 const acl = (right) => {
   return (req, res, next) => {
-    if(!req.isAuthenticated()) {
-      next({status: 403, message: 'Unauthorized'})
-    }
+    let role = (req.isAuthenticated()) ? req.user.role : 'anonymous';
 
-    if (!hasRight(req.user.role, right)) {
-      next({status: 403, message: 'Unauthorized'})
+    if (!hasRight(role, right)) {
+      return next({status: 403, message: 'Unauthorized', right: right})
     }
 
     next();
