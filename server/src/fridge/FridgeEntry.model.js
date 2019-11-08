@@ -31,7 +31,7 @@ schema.statics.findByDrinkId = async function (drinkId) {
 };
 
 schema.methods.isOnStock = function (quantity) {
-  if (_quantity <= 0 || _quantity - quantity <= 0) {
+  if (this.quantity <= 0 || this.quantity - quantity <= 0) {
     return false;
   }
 
@@ -51,11 +51,11 @@ schema.methods.remove = function (quantity) {
     throw new Error("not a number");
   }
 
-  if (_quantity <= 0 || _quantity - quantity <= 0) {
+  if (this.quantity <= 0 || this.quantity - quantity <= 0) {
     throw new Error("not on stock");
   }
 
-  _quantity -= quantity;
+  this.quantity -= quantity;
 };
 
 const Fridge = mongoose.model('Fridge', schema);
