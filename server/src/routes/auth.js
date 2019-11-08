@@ -42,7 +42,7 @@ router.post('/auth/signup', (req, res, next) => {
  * /api/auth/login:
  *   post:
  *     tags: [user]
- *     description: Logs in
+ *     summary: Logs in
  *     produces:
  *       - application/json
  *     parameters:

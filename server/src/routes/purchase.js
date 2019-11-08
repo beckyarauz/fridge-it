@@ -8,8 +8,8 @@ const router = express.Router();
  * @swagger
  * /api/purchase:
  *   post:
- *     tags: []
- *     description: Make a purchase of drinks
+ *     tags: [fridge]
+ *     summary: Make a purchase of drinks
  *     produces:
  *       - application/json
  *     parameters:

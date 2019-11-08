@@ -35,7 +35,7 @@ const DrinkDto = drink => {
  * /api/drinks:
  *   get:
  *     tags: [drinks]
- *     description: Returns all drinks
+ *     summary: Returns all drinks
  *     produces:
  *       - application/json
  *     responses:
@@ -61,7 +61,7 @@ router.get('/drinks/', acl('drinks_list'), async (req, res, next) => {
  * /api/drinks/{id}:
  *   get:
  *     tags: [drinks]
- *     description: Returns all drinks
+ *     summary: Returns all drinks
  *     produces:
  *       - application/json
  *     parameters:

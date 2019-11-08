@@ -40,7 +40,7 @@ const RefillFailed = (message, drinkId) => {
  * /api/fridge/drinks:
  *   get:
  *     tags: [fridge]
- *     description: Returns all currently available drinks
+ *     summary: Returns all currently available drinks
  *     produces:
  *       - application/json
  *     responses:
@@ -94,7 +94,7 @@ router.get('/fridge/drinks', acl('fridge_list'), async (req, res, next) => {
  * /api/fridge/drinks:
  *   post:
  *     tags: [fridge]
- *     description: Returns all currently available drinks
+ *     summary: Returns all currently available drinks
  *     produces:
  *       - application/json
  *     parameters:
