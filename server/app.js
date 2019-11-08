@@ -102,7 +102,7 @@ let admin;
 
 // For any routes that starts with "/api", catch 404 and forward to error handler
 app.use('/api/*', (req, res, next) => {
-  let err = new Error('Not Found');
+  let err = new Error('Not Found: ' + req.path);
   err.status = 404;
   next(err)
 });
