@@ -2,8 +2,9 @@ const _ = require('lodash');
 
 const router = require('express').Router();
 
-const fridge = require('../fridge').FridgeService;
+const fridgeService = require('../fridge').FridgeService;
 const drinkService = require('../drink').DrinkService;
+const transaction = require('../transaction').TransactionService;
 
 const acl = require('../../middlewares').acl;
 
@@ -79,7 +80,7 @@ router.get('/fridge/drinks', acl('fridge_list'), async (req, res, next) => {
    *         type: integer
    */
   res.json({
-    drinks: _.map(await fridge.list(), entry => {
+    drinks: _.map(await fridgeService.list(), entry => {
       return {
         id: entry.getDrink().getDrinkId(),
         details: entry.getDrink().getDetails(),
@@ -133,7 +134,7 @@ router.post('/fridge/drinks', acl('fridge_refill'), async (req, res, next) => {
   const refills = req.body.drinks;
   const results = [];
 
-  for(let i in refills) {
+  for (let i in refills) {
     let refill = refills[i];
     const drink = await drinkService.get(refill.id);
 
@@ -149,7 +150,7 @@ router.post('/fridge/drinks', acl('fridge_refill'), async (req, res, next) => {
       continue;
     }
 
-    await fridge.add(drink, refill.quantity);
+    await fridgeService.add(drink, refill.quantity);
 
     results.push(RefillSuccess(refill.id));
   }
@@ -157,6 +158,53 @@ router.post('/fridge/drinks', acl('fridge_refill'), async (req, res, next) => {
   res.status(200).json({
     result: results
   });
+});
+
+/**
+ * @swagger
+ * /api/fridge/purchase:
+ *   post:
+ *     tags: [fridge]
+ *     summary: Make a purchase of drinks
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             drinkId:
+ *               type: string
+ *               description: id of the drink to buy
+ *             userId:
+ *               type: string
+ *               description: id of the user making the purchase
+ *             quantity:
+ *               type: number
+ *               description: the number of drinks to buy
+ *     responses:
+ *       200:
+ *         description: purchase successful
+ *       500:
+ *         description: purchase failed
+ */
+router.post('/fridge/purchase', acl('fridge_purchase'), async (req, res) => {
+  const drinkId = req.body.drinkId;
+  const drinkQuantity = req.body.quantity;
+  if (await fridgeService.isOnStock(drinkId, drinkQuantity)) {
+    await fridgeService.retrieve(drinkId, drinkQuantity);
+    transaction.registerPurchase(
+      req.user._id.toString(),
+      {id: drinkId, name: drinkId},
+      drinkQuantity,
+      drinkQuantity
+    );
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(500);
+  }
 });
 
 module.exports = router;
