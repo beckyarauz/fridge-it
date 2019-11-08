@@ -4,6 +4,8 @@ const transaction = require('../transaction').TransactionService;
 
 const router = express.Router();
 
+const acl = require('../../middlewares').acl;
+
 /**
  * @swagger
  * /api/purchase:
@@ -34,11 +36,11 @@ const router = express.Router();
  *       500:
  *         description: purchase failed
  */
-router.post('/purchase', (req, res) => {
+router.post('/purchase', acl('fridge_purchase'), async (req, res) => {
   const drinkId = req.body.drinkId;
   const drinkQuantity = req.body.quantity;
-  if (fridge.isOnStock(drinkId, drinkQuantity)) {
-    fridge.retrieve(drinkId, drinkQuantity);
+  if (await fridge.isOnStock(drinkId, drinkQuantity)) {
+    await fridge.retrieve(drinkId, drinkQuantity);
     transaction.registerPurchase(
       req.user._id.toString(),
       {id: drinkId, name: drinkId},

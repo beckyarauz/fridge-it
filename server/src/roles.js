@@ -5,6 +5,7 @@ module.exports = {
 
     'fridge_list': true,
     'fridge_refill': true,
+    'fridge_purchase': true,
   },
   user: {
     'drinks_list': true,
@@ -12,6 +13,7 @@ module.exports = {
 
     'fridge_list': true,
     'fridge_refill': true,
+    'fridge_purchase': true,
   },
   anonymous: {
     'drink_list': true,
