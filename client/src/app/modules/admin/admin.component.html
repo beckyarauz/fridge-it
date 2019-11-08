@@ -1,0 +1,30 @@
+<mat-card>
+  <mat-card-title>
+    Admin Tools
+  </mat-card-title>
+</mat-card>
+<mat-card>
+  <mat-card-title>
+    Manage User Balance
+  </mat-card-title>
+</mat-card>
+<div id="balance-container">
+  <form [formGroup]="balanceForm">
+    <div class="balance-form">
+      <mat-form-field appearance="outline">
+        <mat-label>User Id</mat-label>
+        <input matInput type="text" name="userId" formControlName="userId">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Quantity</mat-label>
+        <input matInput type="number" name="quantity" formControlName="quantity">
+      </mat-form-field>
+      <mat-select formControlName="action">
+        <mat-option>Add</mat-option>
+        <mat-option>Remove</mat-option>
+      </mat-select>
+    </div>
+  </form>
+</div>
+
+
