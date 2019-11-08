@@ -1,46 +1,80 @@
 const _ = require('lodash');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-FridgeEntry = function (drink, quantity) {
-  const _drink = drink;
-  let _quantity = quantity || 0;
+const DrinkEntry = require('../drink').DrinkEntry;
+
+const schema = new Schema({
+  drink: {
+    drinkId: String,
+    reference: {type: Schema.Types.ObjectId, ref: 'Drink'}
+  },
+  quantity: Number,
+}, {
+  timestamps: {
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
+  }
+});
+
+schema.statics.create = function (drink) {
+  let entry = new Fridge();
+  entry.drink.drinkId = drink.getDrinkId();
+  entry.drink.reference = drink.getId();
+  entry.quantity = 0;
+
+  return entry;
+};
+
+schema.statics.findByDrinkId = async function (drinkId) {
+  return Fridge.findOne({'drink.drinkId': drinkId});
+};
+
+schema.methods.isOnStock = function (quantity) {
+  if (_quantity <= 0 || _quantity - quantity <= 0) {
+    return false;
+  }
+
+  return true;
+};
+
+schema.methods.add = function (quantity) {
+  if (!_.isNumber(quantity)) {
+    throw new Error("not a number");
+  }
+
+  this.quantity += quantity;
+};
+
+schema.methods.remove = function (quantity) {
+  if (!_.isNumber(quantity)) {
+    throw new Error("not a number");
+  }
+
+  if (_quantity <= 0 || _quantity - quantity <= 0) {
+    throw new Error("not on stock");
+  }
+
+  _quantity -= quantity;
+};
+
+const Fridge = mongoose.model('Fridge', schema);
+
+const FridgeEntry = function (fridge) {
+  const _fridge = fridge;
 
   return {
     getQuantity: function () {
-      return _quantity;
+      return fridge.quantity;
     },
 
     getDrink: function () {
-      return _drink;
-    },
-
-    isOnStock: function (quantity) {
-      if (_quantity <= 0 || _quantity - quantity <= 0) {
-        return false;
-      }
-
-      return true;
-    },
-
-    add: function (quantity) {
-      if (!_.isNumber(quantity)) {
-        throw new Error("not a number");
-      }
-
-      _quantity += quantity;
-    },
-
-    remove: function (quantity) {
-      if (!_.isNumber(quantity)) {
-        throw new Error("not a number");
-      }
-
-      if (_quantity <= 0 || _quantity - quantity <= 0) {
-        throw new Error("not on stock");
-      }
-
-      _quantity -= quantity;
+      return DrinkEntry(_fridge.drink.reference);
     }
   };
 };
 
-module.exports = FridgeEntry;
+module.exports = {
+  Fridge: Fridge,
+  FridgeEntry: FridgeEntry
+};

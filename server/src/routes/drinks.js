@@ -50,9 +50,9 @@ const DrinkDto = drink => {
  *               items:
  *                 $ref: '#/definitions/drink'
  */
-router.get('/drinks/', acl('drinks_list'), (req, res, next) => {
+router.get('/drinks/', acl('drinks_list'), async (req, res, next) => {
   res.status(200).json({
-    drinks: _.map(drinkService.list(), DrinkDto)
+    drinks: _.map(await drinkService.list(), DrinkDto)
   });
 });
 
@@ -79,9 +79,9 @@ router.get('/drinks/', acl('drinks_list'), (req, res, next) => {
  *             drink:
  *               $ref: '#/definitions/drink'
  */
-router.get('/drinks/:id', acl('drinks_list'), (req, res, next) => {
+router.get('/drinks/:id', acl('drinks_list'), async (req, res, next) => {
   res.status(200).json({
-    drink: DrinkDto(drinkService.get(req.params.id))
+    drink: DrinkDto(await drinkService.get(req.params.id))
   })
 });
 
