@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { UserService } from './core/services';
+import {DataService, UserService} from './core/services';
 import {Router} from '@angular/router';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -9,23 +10,30 @@ import {Router} from '@angular/router';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit {
-  constructor(
-    private router: Router,
-    private userService: UserService
-  ) {}
+  // parentSubject: Subject<any> = new Subject();
+
+  isLoggedIn;
 
   title = 'fridge-it';
 
-  ngOnInit() {
-    // this.userService.populate();
-  }
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private dataService: DataService
+  ) {}
 
-  async isLogged() {
-    this.userService.isLogged();
+
+
+
+  ngOnInit() {
+    this.dataService.getData().subscribe(data => {
+      this.isLoggedIn = data;
+    });
   }
 
   logout() {
     this.userService.purgeAuth();
+    this.isLoggedIn = false;
     this.router.navigateByUrl('/');
   }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { UserService } from '../../core/services';
+import {DataService, UserService} from '../../core/services';
 
 @Component({
   selector: 'app-auth-page',
@@ -19,7 +19,8 @@ export class AuthComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private dataService: DataService
   ) {
     // use FormBuilder to create a form group
     this.authForm = this.fb.group({
@@ -45,6 +46,10 @@ export class AuthComponent implements OnInit {
     return this.authForm.get(type).value;
   }
 
+  updateData(value: boolean) {
+    this.dataService.updateData(value);
+  }
+
   submitForm() {
     this.isSubmitting = true;
 
@@ -52,7 +57,10 @@ export class AuthComponent implements OnInit {
     this.userService
       .attemptAuth(this.authType, credentials)
       .subscribe(
-        data => this.router.navigateByUrl('/'),
+        data => {
+          this.updateData(true);
+          this.router.navigateByUrl('/profile');
+        },
         err => {
           this.isSubmitting = false;
         }

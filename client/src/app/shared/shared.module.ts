@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { ShowAuthedDirective } from './show-authed.directive';
+import {KeysPipe} from './pipes/keys.pipe';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { ShowAuthedDirective } from './show-authed.directive';
     RouterModule
   ],
   declarations: [
-    ShowAuthedDirective
+    ShowAuthedDirective,
+    KeysPipe
   ],
   exports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { ShowAuthedDirective } from './show-authed.directive';
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
-    ShowAuthedDirective
+    ShowAuthedDirective,
+    KeysPipe
   ]
 })
 export class SharedModule {}

@@ -1,6 +1,5 @@
-export interface User {
-  username: string;
-  bio: string;
-  image: string;
-  transactions: object[];
-}
+// export interface User {
+//   _id: string;
+//   username: string;
+//   role: string;
+// }

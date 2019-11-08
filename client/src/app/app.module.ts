@@ -19,6 +19,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import {DrinksModule} from './modules/drinks/drinks.module';
+import {ProfileModule} from './modules/profile/profile.module';
+import {DataService} from './core/services';
 
 
 @NgModule({
@@ -41,9 +43,10 @@ import {DrinksModule} from './modules/drinks/drinks.module';
     SharedModule,
     AuthModule,
     AppRoutingModule,
-    DrinksModule
+    DrinksModule,
+    ProfileModule
   ],
-  providers: [EnvServiceProvider],
+  providers: [EnvServiceProvider, DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

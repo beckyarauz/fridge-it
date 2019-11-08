@@ -4,12 +4,12 @@ import { Observable ,  BehaviorSubject ,  ReplaySubject } from 'rxjs';
 
 import { ApiService } from './api.service';
 import { JwtService } from './jwt.service';
-import { User } from '../models/user.model';
+// import { User } from '../models/user.model';
 import { map } from 'rxjs/operators';
 
 @Injectable()
 export class UserService {
-  private currentUserSubject = new BehaviorSubject<User>({} as User);
+  private currentUserSubject = new BehaviorSubject<any>({} as any);
 
   private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
   public isAuthenticated = this.isAuthenticatedSubject.asObservable();
@@ -36,7 +36,7 @@ export class UserService {
     }
   }
 
-  setAuth(user: User) {
+  setAuth(user) {
     // Save JWT sent from server in localstorage
     this.jwtService.saveToken('randomToken');
     // Set current user data into observable
@@ -49,35 +49,50 @@ export class UserService {
     // Remove JWT from localstorage
     this.jwtService.destroyToken();
     // Set current user to an empty object
-    this.currentUserSubject.next({} as User);
+    this.currentUserSubject.next({} as any);
     // Set auth status to false
     this.isAuthenticatedSubject.next(false);
 
     return await this.apiService.get('/auth/logout').toPromise();
   }
 
-  attemptAuth(type, credentials): Observable<User> {
+  attemptAuth(type, credentials) {
     const {username, password} = credentials;
     return this.apiService.post('/auth/login', {username, password})
       .pipe(map(
         data => {
-          this.setAuth(data.user);
+          this.setAuth(data);
           return data;
         }
       ));
   }
 
-  getCurrentUser(): User {
+  getCurrentUser() {
     return this.currentUserSubject.value;
   }
 
-  async isLogged() {
-    const isLogged = await this.apiService.get('/auth/isLogged').toPromise();
-    console.log(isLogged);
+  getUserTransactions() {
+    // return this.apiService.get('/user/transactions');
+    return [
+        {type: 'balance', balanceDelta: 10 },
+        {type: 'balance', balanceDelta: 3 },
+        {type: 'balance', balanceDelta: -1 },
+        {type: 'balance', balanceDelta: 20 },
+        {type: 'balance', balanceDelta: -1 },
+        {type: 'balance', balanceDelta: -1 },
+        {type: 'purchase', product: 'cola', balanceDelta: -1 },
+        {type: 'purchase', product: 'mate', balanceDelta: -1 },
+        {type: 'purchase', product: 'water', balanceDelta: -1 },
+        {type: 'purchase', product: 'beer', balanceDelta: -1 },
+      ];
+  }
+
+  isLogged() {
+    return this.apiService.get('/auth/isLogged');
   }
 
   // Update the user on the server (email, pass, etc)
-  update(user): Observable<User> {
+  update(user): Observable<any> {
     return this.apiService
       .put('/user', { user })
       .pipe(map(data => {
