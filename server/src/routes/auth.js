@@ -37,6 +37,40 @@ router.post('/auth/signup', (req, res, next) => {
     .catch(err => next(err))
 });
 
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     tags: [user]
+ *     description: Logs in
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         description: id of the drink to get
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             username:
+ *               type: string
+ *               required: true
+ *             password:
+ *               type: string
+ *               required: true
+ *     responses:
+ *       200:
+ *         description: An array of drinks
+ *         schema:
+ *           type: object
+ *           properties:
+ *             drinks:
+ *               type: array
+ *               description: list of drinks
+ *               items:
+ *                 $ref: '#/definitions/drink'
+ */
 router.post('/auth/login', async (req, res, next) => {
   passport.authenticate('local', function(err, user, info) {
     if (err) { return next(err); }
