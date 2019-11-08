@@ -95,7 +95,7 @@ router.get('/fridge/drinks', acl('fridge_list'), async (req, res, next) => {
  * /api/fridge/drinks:
  *   post:
  *     tags: [fridge]
- *     summary: Returns all currently available drinks
+ *     summary: Refill drinks in fridge
  *     produces:
  *       - application/json
  *     parameters:
