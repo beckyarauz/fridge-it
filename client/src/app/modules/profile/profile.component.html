@@ -1,0 +1,65 @@
+<mat-card>
+  <mat-card-title>
+    Profile
+  </mat-card-title>
+  <mat-card-subtitle *ngIf="user&&user.username"> Hello {{user.username}}</mat-card-subtitle>
+</mat-card>
+
+<mat-card class="table-caption">
+  <mat-card-title>
+    Purchases
+  </mat-card-title>
+</mat-card>
+<mat-table *ngIf="isLoggedIn" [dataSource]="purchaseDataSource" class="mat-elevation-z8">
+
+  <!-- Name Column -->
+  <ng-container cdkColumnDef="type">
+    <mat-header-cell *cdkHeaderCellDef> Type </mat-header-cell>
+    <mat-cell *cdkCellDef="let element"> {{element.type}} </mat-cell>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container cdkColumnDef="product">
+    <mat-header-cell *cdkHeaderCellDef> product </mat-header-cell>
+    <mat-cell *cdkCellDef="let element"> {{element.product}} </mat-cell>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container cdkColumnDef="balanceDelta">
+    <mat-header-cell *cdkHeaderCellDef> balanceDelta </mat-header-cell>
+    <mat-cell *cdkCellDef="let element"> {{element.balanceDelta}} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *cdkHeaderRowDef="purchaseDisplayedColumns"></mat-header-row>
+  <mat-row *cdkRowDef="let row; columns: purchaseDisplayedColumns;"></mat-row>
+</mat-table>
+
+<mat-card class="table-caption">
+  <mat-card-title>
+    Balance Transactions
+  </mat-card-title>
+</mat-card>
+<mat-table *ngIf="isLoggedIn" [dataSource]="balanceDataSource" class="mat-elevation-z8">
+
+  <!-- Name Column -->
+  <ng-container cdkColumnDef="type">
+    <mat-header-cell *cdkHeaderCellDef> Type </mat-header-cell>
+    <mat-cell *cdkCellDef="let element"> {{element.type}} </mat-cell>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container cdkColumnDef="product">
+    <mat-header-cell *cdkHeaderCellDef> product </mat-header-cell>
+    <mat-cell *cdkCellDef="let element"> {{element.product}} </mat-cell>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container cdkColumnDef="balanceDelta">
+    <mat-header-cell *cdkHeaderCellDef> balanceDelta </mat-header-cell>
+    <mat-cell *cdkCellDef="let element"> {{element.balanceDelta}} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *cdkHeaderRowDef="balanceDisplayedColumns"></mat-header-row>
+  <mat-row *cdkRowDef="let row; columns: balanceDisplayedColumns;"></mat-row>
+</mat-table>
+
