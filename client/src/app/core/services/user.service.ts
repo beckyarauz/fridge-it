@@ -4,7 +4,6 @@ import { Observable ,  BehaviorSubject ,  ReplaySubject } from 'rxjs';
 
 import { ApiService } from './api.service';
 import { JwtService } from './jwt.service';
-// import { User } from '../models/user.model';
 import { map } from 'rxjs/operators';
 
 @Injectable()
@@ -89,6 +88,11 @@ export class UserService {
 
   isLogged() {
     return this.apiService.get('/auth/isLogged');
+  }
+
+  getUser() {
+    const user = this.getCurrentUser();
+    return this.apiService.get(`/user/${user._id}`);
   }
 
   // Update the user on the server (email, pass, etc)

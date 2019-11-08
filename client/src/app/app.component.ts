@@ -13,27 +13,31 @@ export class AppComponent implements OnInit {
   // parentSubject: Subject<any> = new Subject();
 
   isLoggedIn;
+  role;
 
   title = 'fridge-it';
 
   constructor(
     private router: Router,
     private userService: UserService,
-    private dataService: DataService
+    private dataService: DataService,
   ) {}
 
-
-
-
   ngOnInit() {
-    this.dataService.getData().subscribe(data => {
+    this.dataService.getData()
+      .subscribe(data => {
       this.isLoggedIn = data;
+      if (this.isLoggedIn) {
+        this.userService.getUser()
+          .subscribe(info => this.role = info.role);
+      }
     });
   }
 
   logout() {
     this.userService.purgeAuth();
     this.isLoggedIn = false;
+    this.role = undefined;
     this.router.navigateByUrl('/');
   }
 }

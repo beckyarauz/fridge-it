@@ -85,7 +85,6 @@ router.get('/fridge/drinks', acl('fridge_list'), (req, res, next) => {
         details: entry.getDrink().getDetails(),
         quantity: entry.getQuantity()
       }
-
     })
   });
 });

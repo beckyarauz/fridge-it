@@ -2,6 +2,7 @@ import {Component, forwardRef, OnInit} from '@angular/core';
 import {ApiService} from '../../core/services';
 import {FridgeService} from '../../core/services';
 import {ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-drinks',
@@ -24,7 +25,8 @@ export class DrinksComponent implements OnInit, ControlValueAccessor {
 
   constructor(
     private api: ApiService,
-    private fridge: FridgeService
+    private fridge: FridgeService,
+    private router: Router,
   ) {
     this.drinksForm = new FormGroup({
         drinkId: new FormControl(),
@@ -33,12 +35,15 @@ export class DrinksComponent implements OnInit, ControlValueAccessor {
   }
 
   ngOnInit() {
+
     this.buySelected = false;
     this.fridge.getDrinks().subscribe(
       data => {
         this.drinks = data.drinks;
       },
-      err => console.log(err.message)
+      err => {
+        this.router.navigateByUrl('/login');
+      }
     );
   }
 

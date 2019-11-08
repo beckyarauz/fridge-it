@@ -2,6 +2,8 @@ const router = require('express').Router();
 
 const balance = require('../balance').BalanceService;
 
+const User = require('../models/User.model');
+
 const staticData = [
   {
     id: "1234",
@@ -20,11 +22,12 @@ router.get('/user/', (req, res) => {
   res.json(staticData);
 });
 
-router.get('/user/:userId', (req, res) => {
-  const user = staticData.find((elem) => elem.id === req.params.userId);
-  user.balance = balance.get(user.id);
+router.get('/user/:userId', async (req, res) => {
+  const user = await User.findOne({_id: req.params.userId}).exec();
 
   if (user) {
+
+    console.log(user);
     res.json(user);
   } else {
     res.sendStatus(404);

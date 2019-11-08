@@ -11,8 +11,6 @@ export class FridgeService {
   ) {}
 
   buyDrink(drinkId, quantity) {
-    console.log(drinkId);
-    console.log(quantity);
     return this.api.post('/fridge/drinks/retrieve', {
       drinkId, quantity
     })

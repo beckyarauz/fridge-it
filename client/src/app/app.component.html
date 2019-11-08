@@ -8,7 +8,11 @@
       <button mat-raised-button class="side-btn" color="accent" routerLink="/profile" (click)="sidenav.toggle()">
         Profile
       </button>
-      <button mat-raised-button class="side-btn" routerLink="/login" (click)="sidenav.toggle()">
+
+      <button mat-raised-button class="side-btn" color="accent" *ngIf="role==='admin'">
+        Admin
+      </button>
+      <button mat-raised-button *ngIf="!isLoggedIn" class="side-btn" routerLink="/login" (click)="sidenav.toggle()">
         Log In
       </button>
       <button mat-raised-button *ngIf="isLoggedIn" class="side-btn" (click)="logout()" (click)="sidenav.toggle()">

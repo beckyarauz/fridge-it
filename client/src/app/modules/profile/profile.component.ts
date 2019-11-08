@@ -27,10 +27,14 @@ export class ProfileComponent implements OnInit {
   async ngOnInit() {
     this.isLogged().subscribe(
       data => {
-        this.user = this.userService.getCurrentUser();
         // this.userService.getUserTransactions().subscribe(tran => {
         //   this.transactions = tran;
         // });
+
+        this.userService.getUser()
+          .subscribe(info => {
+            this.user = info;
+          });
         this.transactions = this.userService.getUserTransactions();
         this.transactions.forEach(t => {
           t.type === 'purchase' ?
