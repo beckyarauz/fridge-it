@@ -104,7 +104,7 @@ export class UserService {
 
 
   isLogged() {
-    return this.apiService.get('/auth/isLogged');
+    return this.apiService.get('/auth/status');
   }
 
   getUser() {

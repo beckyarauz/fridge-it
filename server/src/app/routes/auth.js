@@ -131,7 +131,7 @@ router.get('/auth/logout', (req, res) => {
 
 /**
  * @swagger
- * /api/auth/isLoggedIn:
+ * /api/auth/status:
  *   get:
  *     tags: [auth]
  *     summary: route to check if client is logged in
@@ -141,7 +141,7 @@ router.get('/auth/logout', (req, res) => {
  *       200:
  *         description: message indicating whether client is logged in or not
  */
-router.get('/auth/isLogged', (req, res) => {
+router.get('/auth/status', (req, res) => {
   if (req.user !== undefined && req.user !== null) {
     res.status(200).json({
       message: 'You are logged in',
