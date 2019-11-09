@@ -13,12 +13,16 @@ module.exports = require('swagger-jsdoc')({
         description: 'endpoint for authentication'
       },
       {
-        name: 'drinks',
-        description: 'all about drinks'
+        name: 'user',
+        description: 'user profile'
       },
       {
         name: 'fridge',
         description: 'heart of fridgeIT'
+      },
+      {
+        name: 'drinks',
+        description: 'all about drinks'
       },
       {
         name: 'admin',
