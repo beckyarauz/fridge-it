@@ -68,7 +68,6 @@ app.get('*', (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  console.error("----- An error happened -----");
   console.error(err);
 
   if (!res.headersSent) {

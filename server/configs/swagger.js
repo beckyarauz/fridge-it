@@ -9,8 +9,8 @@ module.exports = require('swagger-jsdoc')({
     basePath: '/',
     tags: [
       {
-        name: 'user',
-        description: 'user management'
+        name: 'auth',
+        description: 'endpoint for authentication'
       },
       {
         name: 'drinks',
@@ -34,5 +34,5 @@ module.exports = require('swagger-jsdoc')({
       }
     }
   },
-  apis: ['./**/routes/*.js', 'routes.js'],
+  apis: ['./**/routes/*.js', './**/routes/dto/*.js', 'routes.js'],
 });

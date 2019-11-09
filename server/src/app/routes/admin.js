@@ -4,18 +4,7 @@ const transaction = require('lib/transaction').TransactionService;
 const drinkService = require('lib/drink').DrinkService;
 const acl = require('app/middleware/acl').acl;
 
-/**
- * @swagger
- * definition:
- *   respError:
- *     properties:
- *       message:
- *         type: string
- */
-const ErrorResponse = function (res, code, message) {
-  let asd = 'asd';
-  return res.status(code).json({"message": message});
-};
+const ErrorResponse = require('./dto/ErrorResponse');
 
 /**
  * @swagger
