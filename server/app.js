@@ -45,12 +45,12 @@ app.use(session({
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 
-const passport = require('./src/lib/auth/').passport;
+const passport = require('lib/auth/').passport;
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use([
-  require('./src/app/routes')
+  require('app/routes')
 ]);
 
 app.use('/api/*', (req, res, next) => {

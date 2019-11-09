@@ -46,7 +46,7 @@ schema.methods.add = function (quantity) {
   this.quantity += quantity;
 };
 
-schema.methods.remove = function (quantity) {
+schema.methods.retrieve = function (quantity) {
   if (!_.isNumber(quantity)) {
     throw new Error("not a number");
   }

@@ -40,7 +40,7 @@ class FridgeService {
       throw new Error('unknown drink');
     }
 
-    entry.remove(quantity);
+    entry.retrieve(quantity);
   }
 }
 
