@@ -1,13 +1,13 @@
 const router = require('express').Router();
 
-const balance = require('../balance').BalanceService;
+const balance = require('lib/balance').BalanceService;
 
-const User = require('../models/User.model');
+const User = require('lib/user/User.model');
 
-const acl = require('../../middlewares').acl;
-const own = require('../../middlewares').own;
-const or = require('../../middlewares').or;
-const has = require('../../middlewares').has;
+const acl = require('app/middleware/acl').acl;
+const own = require('app/middleware/acl').own;
+const or = require('app/middleware/acl').or;
+const has = require('app/middleware/acl').has;
 
 const staticData = [
   {

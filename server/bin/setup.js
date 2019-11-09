@@ -1,7 +1,7 @@
 const _ = require('lodash');
 
-const drinkService = require('./drink').DrinkService;
-const fridgeService = require('./fridge').FridgeService;
+const drinkService = require('../src/drink').DrinkService;
+const fridgeService = require('../src/fridge').FridgeService;
 
 (async () => {
   const drinks = [

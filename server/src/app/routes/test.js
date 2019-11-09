@@ -2,7 +2,7 @@ const _ = require('lodash');
 
 const router = require('express').Router();
 
-const fridge = require('../fridge').FridgeService;
+const fridge = require('lib/fridge').FridgeService;
 
 router.post('/test/fridge/drinks/retrieve', (req, res, next) => {
   const {drinkId, quantity} = req.body;

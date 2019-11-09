@@ -1,3 +1,6 @@
+process.env.NODE_PATH += ':src';
+require('module').Module._initPaths();
+
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
@@ -10,12 +13,6 @@ const logger = require('morgan');
 const nocache = require('nocache');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-const passport = require('passport');
-const bcrypt = require("bcrypt");
-
-require('./src/setup');
-
-const User = require('./src/models/User.model');
 
 require('./configs/database');
 
@@ -40,8 +37,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-const LocalStrategy = require('passport-local').Strategy;
-
 // Enable authentication using session + passport
 app.use(session({
   secret: process.env.SESSION_SECRET || 'irongenerator',
@@ -50,57 +45,14 @@ app.use(session({
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 
-passport.serializeUser((user, cb) => {
-  cb(null, user._id);
-});
-
-passport.deserializeUser((id, cb) => {
-  User.findById(id, (err, user) => {
-    if (err) { return cb(err); }
-    cb(null, user);
-  });
-});
-
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
-      if (err) { return done(err); }
-      if (!user) {
-        return done(null, false, { message: 'Incorrect username' });
-      }
-      if (!bcrypt.compareSync(password, user.password)) {
-        return done(null,false,{message: 'Incorrect password'});
-      }
-      return done(null, user);
-    });
-  }
-));
-
+const passport = require('./src/lib/auth/').passport;
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use([
-  require('./src/routes/index')
+  require('./src/app/routes')
 ]);
 
-let admin;
-
-(async (User) => {
-  try {
-    admin = await User.find({username: 'admin'});
-
-    if(!admin) {
-      User.create({
-        username: 'admin',
-        password: '123'
-      });
-    }
-  } catch (e) {
-    console.log(e.message)
-  }
-})(User);
-
-// For any routes that starts with "/api", catch 404 and forward to error handler
 app.use('/api/*', (req, res, next) => {
   let err = new Error('Not Found: ' + req.path);
   err.status = 404;
@@ -108,24 +60,20 @@ app.use('/api/*', (req, res, next) => {
 });
 
 const swaggerUi = require('swagger-ui-express');
-const swaggerSpec = require("./swagger");
+const swaggerSpec = require("./configs/swagger");
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// For any other routes, redirect to the index.html file of React
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/fridge-it/index.html'))
+  res.redirect(301, "/api-docs/");
 });
 
-// Error handler
 app.use((err, req, res, next) => {
   console.error("----- An error happened -----");
   console.error(err);
 
-  // only render if the error ocurred before sending the response
   if (!res.headersSent) {
     res.status(err.status || 500);
 
-    // A limited amount of information sent in production
     if (process.env.NODE_ENV === 'production') {
       res.json(err);
     } else

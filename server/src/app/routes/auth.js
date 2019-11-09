@@ -1,6 +1,6 @@
 const passport = require('passport');
 const router = require('express').Router();
-const User = require("../models/User.model");
+const User = require("lib/user/User.model");
 const _ = require('lodash');
 
 // Bcrypt to encrypt passwords

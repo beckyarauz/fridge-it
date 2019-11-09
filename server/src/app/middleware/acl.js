@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const roles = require('./src/roles');
+const roles = require('app/roles');
 
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {

@@ -2,8 +2,8 @@ const _ = require('lodash');
 
 const router = require('express').Router();
 
-const drinkService = require('../drink').DrinkService;
-const acl = require('../../middlewares').acl;
+const drinkService = require('lib/drink').DrinkService;
+const acl = require('app/middleware/acl').acl;
 
 /**
  * @swagger

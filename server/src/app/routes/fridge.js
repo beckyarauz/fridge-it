@@ -2,11 +2,11 @@ const _ = require('lodash');
 
 const router = require('express').Router();
 
-const fridgeService = require('../fridge').FridgeService;
-const drinkService = require('../drink').DrinkService;
-const transaction = require('../transaction').TransactionService;
+const fridgeService = require('lib/fridge').FridgeService;
+const drinkService = require('lib/drink').DrinkService;
+const transaction = require('lib/transaction').TransactionService;
 
-const acl = require('../../middlewares').acl;
+const acl = require('app/middleware/acl').acl;
 
 /**
  * @swagger
@@ -57,7 +57,6 @@ const RefillFailed = (message, drinkId) => {
  *                 $ref: '#/definitions/drinks'
  */
 router.get('/fridge/drinks', acl('fridge_list'), async (req, res, next) => {
-
   /**
    * @swagger
    * definition:

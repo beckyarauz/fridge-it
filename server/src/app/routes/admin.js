@@ -1,8 +1,8 @@
 const router = require('express').Router();
 
-const transaction = require('../transaction').TransactionService;
-const drinkService = require('../drink').DrinkService;
-const acl = require('../../middlewares').acl;
+const transaction = require('lib/transaction').TransactionService;
+const drinkService = require('lib/drink').DrinkService;
+const acl = require('app/middleware/acl').acl;
 
 /**
  * @swagger
@@ -13,6 +13,7 @@ const acl = require('../../middlewares').acl;
  *         type: string
  */
 const ErrorResponse = function (res, code, message) {
+  let asd = 'asd';
   return res.status(code).json({"message": message});
 };
 
